@@ -1,154 +1,1457 @@
-<!doctype html>
-<html lang="zh-Hant">
+<!DOCTYPE html>
+<html lang="zh-TW">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Apple Select | 精選 Apple 商品</title>
-  <meta name="description" content="探索 iPhone 17、iPhone 18 預告系列、MacBook Pro 與 iPad 全系列商品。">
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apple 3C 科技電商 | iPhone · MacBook · iPad</title>
+    <style>
+        :root {
+            --tech-black: #0a0a0a;
+            --tech-dark: #1a1a2e;
+            --tech-blue: #00d4ff;
+            --tech-purple: #7b2ff7;
+            --tech-cyan: #00f5d4;
+            --tech-silver: #c0c0c0;
+            --tech-gradient: linear-gradient(135deg, #00d4ff, #7b2ff7);
+            --card-bg: #16213e;
+            --bg-dark: #0f0f23;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0b0;
+            --price-color: #00d4ff;
+            --accent-green: #00ff88;
+            --accent-orange: #ff6b35;
+        }
 
-    :root {
-      --ink: #161616;
-      --muted: #797873;
-      --paper: #f3f0e9;
-      --panel: #fbfaf6;
-      --line: #d9d4c9;
-      --lime: #c8f169;
-      --coral: #ff745e;
-      --blue: #7894ff;
-      --shadow: 0 18px 50px rgba(25, 24, 20, .09);
-    }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-    body { margin: 0; color: var(--ink); background: var(--paper); font-family: 'Space Grotesk', 'Microsoft JhengHei', sans-serif; }
-    button, input { font: inherit; }
-    button { cursor: pointer; }
-    .topbar { background: var(--ink); color: #fff; font: 11px 'DM Mono', monospace; letter-spacing: .08em; padding: 9px 5vw; display: flex; justify-content: space-between; }
-    .nav { padding: 23px 5vw; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--line); }
-    .brand { color: var(--ink); text-decoration: none; font-weight: 700; letter-spacing: -.06em; font-size: 25px; }
-    .nav-links { display: flex; gap: 30px; margin-left: 8vw; }
-    .nav-links a { color: var(--ink); text-decoration: none; font-size: 13px; }
-    .nav-actions { display: flex; align-items: center; gap: 11px; }
-    .icon-button { width: 41px; height: 41px; border: 1px solid var(--line); border-radius: 50%; background: transparent; position: relative; }
-    .icon-button:hover { background: var(--ink); color: #fff; }
-    .bag-count { position: absolute; right: -3px; top: -4px; background: var(--coral); color: var(--ink); width: 17px; height: 17px; border-radius: 50%; font: 10px 'DM Mono'; display: grid; place-items: center; }
+        body {
+            font-family: 'Segoe UI', 'Microsoft JhengHei', Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background: var(--bg-dark);
+            overflow-x: hidden;
+        }
 
-    .hero { padding: 86px 5vw 73px; display: grid; grid-template-columns: 1.3fr .7fr; gap: 5vw; position: relative; overflow: hidden; }
-    .hero:after { content: '17'; position: absolute; right: 2vw; bottom: -80px; color: rgba(22,22,22,.045); font-size: 410px; font-weight: 700; letter-spacing: -.13em; pointer-events: none; }
-    .eyebrow { font: 11px 'DM Mono', monospace; text-transform: uppercase; letter-spacing: .11em; margin: 0 0 20px; }
-    h1 { font-size: clamp(56px, 9vw, 132px); line-height: .85; letter-spacing: -.09em; max-width: 760px; margin: 0; position: relative; z-index: 1; }
-    .hero-copy { max-width: 360px; align-self: end; padding-bottom: 4px; position: relative; z-index: 1; }
-    .hero-copy p { color: var(--muted); line-height: 1.7; font-size: 14px; margin: 0 0 24px; }
-    .pill-link { display: inline-flex; align-items: center; gap: 15px; color: var(--ink); text-decoration: none; font-size: 13px; border-bottom: 1px solid var(--ink); padding-bottom: 8px; }
-    .pill-link span { background: var(--ink); color: #fff; border-radius: 50%; width: 26px; height: 26px; display: grid; place-items: center; }
+        /* Animated Background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(ellipse at 20% 50%, rgba(0, 212, 255, 0.05) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 20%, rgba(123, 47, 247, 0.05) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 80%, rgba(0, 245, 212, 0.03) 0%, transparent 50%);
+            z-index: -1;
+            pointer-events: none;
+        }
 
-    .catalog { padding: 0 5vw 100px; }
-    .catalog-head { display: flex; align-items: end; justify-content: space-between; gap: 20px; border-top: 1px solid var(--ink); padding: 25px 0 31px; }
-    .catalog-head h2 { margin: 0; font-size: 38px; letter-spacing: -.07em; }
-    .tools { display: flex; gap: 10px; align-items: center; }
-    .search { width: 220px; border: 1px solid var(--line); background: transparent; padding: 12px 15px; border-radius: 3px; outline: none; }
-    .search:focus { border-color: var(--ink); }
-    .filter { border: 1px solid var(--line); background: transparent; padding: 12px 14px; border-radius: 3px; }
-    .filter.active, .filter:hover { background: var(--ink); color: #fff; border-color: var(--ink); }
-    .category-row { display: flex; gap: 8px; margin-bottom: 34px; overflow-x: auto; padding-bottom: 5px; }
-    .products { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
-    .product { background: var(--panel); border: 1px solid var(--line); min-height: 430px; display: flex; flex-direction: column; padding: 18px; transition: transform .25s, box-shadow .25s; }
-    .product:hover { transform: translateY(-5px); box-shadow: var(--shadow); }
-    .product-art { height: 220px; margin: -18px -18px 20px; display: grid; place-items: center; position: relative; overflow: hidden; background: #e4e0d7; }
-    .product-art:before { content: ''; position: absolute; width: 180px; height: 180px; border-radius: 50%; background: rgba(255,255,255,.4); }
-    .product-art.phone { background: #dce5ff; }
-    .product-art.mac { background: #e6e3de; }
-    .product-art.pad { background: #dcefe4; }
-    .device { position: relative; z-index: 1; background: #202328; box-shadow: 10px 13px 22px rgba(0,0,0,.2); }
-    .phone-device { width: 78px; height: 150px; border: 4px solid #34383e; border-radius: 15px; }
-    .phone-device:after { content: ''; position: absolute; width: 36px; height: 36px; background: #434953; border-radius: 12px; top: 8px; left: 7px; box-shadow: 13px 0 #434953, 0 13px #434953; }
-    .mac-device { width: 215px; height: 128px; border-radius: 7px 7px 2px 2px; background: #8f969b; border: 5px solid #bbc0c2; }
-    .mac-device:after { content: ''; position: absolute; width: 250px; height: 7px; background: #bbc0c2; bottom: -14px; left: -22px; border-radius: 2px 2px 8px 8px; }
-    .pad-device { width: 112px; height: 158px; border-radius: 13px; background: #303338; border: 4px solid #70757a; }
-    .pad-device:after { content: ''; position: absolute; width: 5px; height: 5px; border-radius: 50%; background: #bfc8c7; left: 50%; top: 6px; }
-    .meta { display: flex; justify-content: space-between; color: var(--muted); font: 10px 'DM Mono', monospace; text-transform: uppercase; }
-    .product h3 { font-size: 21px; letter-spacing: -.06em; margin: 13px 0 7px; }
-    .product-description { color: var(--muted); font-size: 12px; margin: 0 0 17px; line-height: 1.5; min-height: 36px; }
-    .product-footer { margin-top: auto; display: flex; justify-content: space-between; align-items: center; }
-    .price { font: 14px 'DM Mono', monospace; }
-    .add { border: 0; background: var(--lime); padding: 10px 15px; font-size: 12px; border-radius: 2px; }
-    .add:hover { background: var(--ink); color: #fff; }
-    .coming { background: #e6e1d5; color: var(--muted); padding: 10px 13px; font-size: 11px; }
-    .empty { grid-column: 1/-1; color: var(--muted); padding: 50px 0; }
+        /* Header */
+        header {
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0, 212, 255, 0.2);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
 
-    .footer { background: var(--ink); color: #fff; padding: 27px 5vw; display: flex; justify-content: space-between; font-size: 12px; }
-    .footer span { color: #a7a59d; }
-    .drawer { position: fixed; inset: 0; background: rgba(22,22,22,.35); z-index: 5; visibility: hidden; opacity: 0; transition: opacity .25s, visibility .25s; }
-    .drawer.open { visibility: visible; opacity: 1; }
-    .drawer-panel { position: absolute; right: 0; top: 0; height: 100%; width: min(420px, 92vw); background: var(--panel); padding: 29px; transform: translateX(100%); transition: transform .3s ease; display: flex; flex-direction: column; }
-    .drawer.open .drawer-panel { transform: translateX(0); }
-    .drawer-top { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--line); padding-bottom: 19px; }
-    .drawer-top h2 { margin: 0; font-size: 26px; letter-spacing: -.07em; }
-    .close { border: 0; background: none; font-size: 25px; }
-    .cart-items { flex: 1; overflow-y: auto; padding: 14px 0; }
-    .cart-item { display: flex; justify-content: space-between; gap: 15px; padding: 17px 0; border-bottom: 1px solid var(--line); font-size: 13px; }
-    .cart-item small { display: block; color: var(--muted); margin-top: 5px; }
-    .remove { border: 0; background: none; color: var(--muted); font-size: 11px; }
-    .cart-total { border-top: 1px solid var(--ink); padding-top: 20px; display: flex; justify-content: space-between; font: 15px 'DM Mono', monospace; }
-    .checkout { border: 0; background: var(--ink); color: #fff; padding: 15px; margin-top: 17px; width: 100%; }
-    .checkout:hover { background: var(--coral); color: var(--ink); }
-    @media (max-width: 900px) { .products { grid-template-columns: repeat(2, minmax(0, 1fr)); } .hero { grid-template-columns: 1fr; padding-top: 60px; } .hero-copy { margin-top: 28px; } .nav-links { display: none; } }
-    @media (max-width: 560px) { .topbar { font-size: 9px; } .topbar span:last-child { display: none; } .nav { padding: 18px 5vw; } .catalog-head { align-items: start; flex-direction: column; } .tools { width: 100%; } .search { flex: 1; min-width: 0; } .products { grid-template-columns: 1fr; } .product { min-height: 400px; } .hero { padding-bottom: 55px; } h1 { font-size: 67px; } }
-  </style>
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo-icon {
+            width: 45px;
+            height: 45px;
+            background: var(--tech-gradient);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .logo h1 {
+            font-size: 1.5rem;
+            background: var(--tech-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .logo span {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .cart-icon {
+            position: relative;
+            cursor: pointer;
+            padding: 0.8rem;
+            background: rgba(0, 212, 255, 0.1);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: 12px;
+            transition: all 0.3s;
+        }
+
+        .cart-icon:hover {
+            background: rgba(0, 212, 255, 0.2);
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+        }
+
+        .cart-icon svg {
+            width: 24px;
+            height: 24px;
+            fill: var(--tech-blue);
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: var(--accent-orange);
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: bold;
+        }
+
+        /* Navigation */
+        nav {
+            background: rgba(26, 26, 46, 0.8);
+            backdrop-filter: blur(10px);
+            padding: 0.8rem 2rem;
+            border-bottom: 1px solid rgba(0, 212, 255, 0.1);
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        nav a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            padding: 0.5rem 1.2rem;
+            border-radius: 8px;
+            transition: all 0.3s;
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+
+        nav a:hover, nav a.active {
+            background: rgba(0, 212, 255, 0.15);
+            color: var(--tech-blue);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+        }
+
+        /* Hero Banner */
+        .hero-banner {
+            background: linear-gradient(135deg, rgba(10, 10, 10, 0.9), rgba(26, 26, 46, 0.9));
+            color: white;
+            text-align: center;
+            padding: 5rem 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-banner::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(from 0deg, transparent, rgba(0, 212, 255, 0.1), transparent, rgba(123, 47, 247, 0.1), transparent);
+            animation: rotate 20s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .hero-banner h2 {
+            font-size: 2.8rem;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 1;
+            background: var(--tech-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-banner p {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Section Headers */
+        .section-header {
+            text-align: center;
+            margin: 3rem 0 2rem;
+            padding: 2rem 0;
+        }
+
+        .section-header h2 {
+            font-size: 2rem;
+            background: var(--tech-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .section-header .tech-line {
+            width: 80px;
+            height: 3px;
+            background: var(--tech-gradient);
+            margin: 1rem auto;
+            border-radius: 2px;
+        }
+
+        .section-header p {
+            color: var(--text-secondary);
+            font-size: 1rem;
+        }
+
+        /* Product Grid */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        /* Product Card */
+        .product-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid rgba(0, 212, 255, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .product-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(0, 212, 255, 0.4);
+            box-shadow: 0 10px 40px rgba(0, 212, 255, 0.2);
+        }
+
+        .product-badge {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            z-index: 1;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .product-badge.hot {
+            background: linear-gradient(135deg, #ff6b35, #ff2d55);
+            color: white;
+        }
+
+        .product-badge.new {
+            background: linear-gradient(135deg, #00d4ff, #7b2ff7);
+            color: white;
+        }
+
+        .product-badge.sale {
+            background: linear-gradient(135deg, #00ff88, #00d4ff);
+            color: var(--tech-black);
+        }
+
+        .product-image {
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            padding: 2.5rem;
+            text-align: center;
+            min-height: 220px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .product-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at center, rgba(0, 212, 255, 0.1), transparent 70%);
+        }
+
+        .product-image .device-icon {
+            font-size: 5rem;
+            position: relative;
+            z-index: 1;
+            filter: drop-shadow(0 0 20px rgba(0, 212, 255, 0.3));
+        }
+
+        .product-info {
+            padding: 1.5rem;
+        }
+
+        .product-name {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 0.4rem;
+            color: var(--text-primary);
+        }
+
+        .product-series {
+            color: var(--tech-blue);
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .product-specs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.6rem;
+            margin-bottom: 1rem;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            border: 1px solid rgba(0, 212, 255, 0.1);
+        }
+
+        .spec-item {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .spec-item strong {
+            color: var(--tech-cyan);
+            display: block;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.2rem;
+        }
+
+        .product-price-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(0, 212, 255, 0.1);
+        }
+
+        .product-price {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: var(--price-color);
+        }
+
+        .product-price .currency {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .stock-status {
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .stock-status.in-stock {
+            color: var(--accent-green);
+        }
+
+        .stock-status.low-stock {
+            color: var(--accent-orange);
+        }
+
+        .stock-status.out-of-stock {
+            color: #ff4444;
+        }
+
+        .add-to-cart-btn {
+            width: 100%;
+            padding: 0.9rem;
+            background: var(--tech-gradient);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .add-to-cart-btn:hover {
+            transform: scale(1.02);
+            box-shadow: 0 5px 20px rgba(0, 212, 255, 0.4);
+        }
+
+        .add-to-cart-btn:disabled {
+            background: #333;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* Features Section */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+            padding: 2rem 0;
+        }
+
+        .feature-card {
+            text-align: center;
+            padding: 2rem;
+            background: var(--card-bg);
+            border-radius: 16px;
+            border: 1px solid rgba(0, 212, 255, 0.1);
+            transition: all 0.3s;
+        }
+
+        .feature-card:hover {
+            border-color: rgba(0, 212, 255, 0.3);
+            transform: translateY(-5px);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature-card h3 {
+            color: var(--tech-blue);
+            margin-bottom: 0.5rem;
+        }
+
+        .feature-card p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* Comparison Table */
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+            background: var(--card-bg);
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid rgba(0, 212, 255, 0.1);
+        }
+
+        .comparison-table th {
+            background: rgba(0, 212, 255, 0.1);
+            color: var(--tech-blue);
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .comparison-table td {
+            padding: 0.8rem 1rem;
+            border-bottom: 1px solid rgba(0, 212, 255, 0.1);
+            color: var(--text-secondary);
+        }
+
+        .comparison-table tr:nth-child(even) {
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        .comparison-table tr:hover {
+            background: rgba(0, 212, 255, 0.05);
+        }
+
+        /* Cart Sidebar */
+        .cart-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 2000;
+            display: none;
+        }
+
+        .cart-overlay.active {
+            display: block;
+        }
+
+        .cart-sidebar {
+            position: fixed;
+            top: 0;
+            right: -450px;
+            width: 450px;
+            max-width: 100%;
+            height: 100%;
+            background: var(--tech-dark);
+            z-index: 2001;
+            transition: right 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            border-left: 1px solid rgba(0, 212, 255, 0.2);
+        }
+
+        .cart-sidebar.active {
+            right: 0;
+        }
+
+        .cart-header {
+            background: rgba(0, 0, 0, 0.3);
+            color: white;
+            padding: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(0, 212, 255, 0.2);
+        }
+
+        .cart-header h3 {
+            font-size: 1.3rem;
+            color: var(--tech-blue);
+        }
+
+        .cart-close {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.3rem;
+            transition: color 0.3s;
+        }
+
+        .cart-close:hover {
+            color: var(--tech-blue);
+        }
+
+        .cart-items {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1rem;
+        }
+
+        .cart-empty {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: var(--text-secondary);
+        }
+
+        .cart-item {
+            display: flex;
+            gap: 1rem;
+            padding: 1rem;
+            border-bottom: 1px solid rgba(0, 212, 255, 0.1);
+            align-items: center;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            margin-bottom: 0.5rem;
+        }
+
+        .cart-item-image {
+            width: 55px;
+            height: 55px;
+            background: rgba(0, 212, 255, 0.1);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .cart-item-info {
+            flex: 1;
+        }
+
+        .cart-item-name {
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .cart-item-price {
+            color: var(--price-color);
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .cart-item-qty {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .qty-btn {
+            width: 28px;
+            height: 28px;
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            background: rgba(0, 212, 255, 0.1);
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: var(--tech-blue);
+            transition: all 0.3s;
+        }
+
+        .qty-btn:hover {
+            background: rgba(0, 212, 255, 0.2);
+        }
+
+        .cart-item-remove {
+            background: none;
+            border: none;
+            color: #ff4444;
+            cursor: pointer;
+            font-size: 1.1rem;
+            padding: 0.3rem;
+            transition: transform 0.3s;
+        }
+
+        .cart-item-remove:hover {
+            transform: scale(1.2);
+        }
+
+        .cart-footer {
+            border-top: 1px solid rgba(0, 212, 255, 0.2);
+            padding: 1.5rem;
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        .cart-total {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .cart-total .total-price {
+            color: var(--price-color);
+            font-size: 1.4rem;
+            font-weight: bold;
+        }
+
+        .checkout-btn {
+            width: 100%;
+            padding: 1rem;
+            background: var(--tech-gradient);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .checkout-btn:hover {
+            box-shadow: 0 5px 20px rgba(0, 212, 255, 0.4);
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(10, 10, 10, 0.95);
+            border-top: 1px solid rgba(0, 212, 255, 0.1);
+            color: var(--text-secondary);
+            padding: 3rem 2rem 1.5rem;
+            margin-top: 3rem;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .footer-section h4 {
+            color: var(--tech-blue);
+            margin-bottom: 1rem;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            line-height: 2;
+            transition: color 0.3s;
+        }
+
+        .footer-section a:hover {
+            color: var(--tech-blue);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            margin-top: 2rem;
+            border-top: 1px solid rgba(0, 212, 255, 0.1);
+        }
+
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: var(--tech-dark);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            z-index: 3000;
+            transition: transform 0.3s ease;
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            nav ul {
+                flex-wrap: wrap;
+                gap: 0.5rem;
+                justify-content: center;
+            }
+
+            .hero-banner h2 {
+                font-size: 2rem;
+            }
+
+            .product-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .cart-sidebar {
+                width: 100%;
+            }
+        }
+    </style>
 </head>
 <body>
-  <div class="topbar"><span>APPLE SELECT / TAIWAN</span><span>免運費 · 14 天鑑賞期 · 原廠保固</span></div>
-  <nav class="nav">
-    <a class="brand" href="#top">apple select</a>
-    <div class="nav-links"><a href="#catalog">全部商品</a><a href="#catalog" data-nav="iphone">iPhone</a><a href="#catalog" data-nav="mac">MacBook Pro</a><a href="#catalog" data-nav="ipad">iPad</a></div>
-    <div class="nav-actions"><button class="icon-button" id="searchFocus" aria-label="搜尋商品">⌕</button><button class="icon-button" id="bagButton" aria-label="開啟購物袋">⌑<b class="bag-count" id="bagCount">0</b></button></div>
-  </nav>
 
-  <main id="top">
-    <section class="hero">
-      <div><p class="eyebrow">New season / 2026</p><h1>讓科技<br><em>成為日常。</em></h1></div>
-      <div class="hero-copy"><p>從口袋裡的 iPhone，到桌面上的 MacBook Pro。挑選你每天真正會使用的好工具，今天就開始。</p><a class="pill-link" href="#catalog">探索全系列 <span>↓</span></a></div>
-    </section>
-    <section class="catalog" id="catalog">
-      <div class="catalog-head"><div><p class="eyebrow">Shop the lineup</p><h2>精選商品</h2></div><div class="tools"><input class="search" id="searchInput" type="search" placeholder="搜尋型號..." aria-label="搜尋型號"><button class="filter" id="sortButton">價格排序 ↕</button></div></div>
-      <div class="category-row"><button class="filter active" data-category="all">全部</button><button class="filter" data-category="iphone">iPhone</button><button class="filter" data-category="mac">MacBook Pro</button><button class="filter" data-category="ipad">iPad</button></div>
-      <div class="products" id="productGrid"></div>
-    </section>
-  </main>
+<!-- Header -->
+<header>
+    <div class="header-content">
+        <div class="logo">
+            <div class="logo-icon">🍎</div>
+            <div>
+                <h1>Apple 3C 科技電商</h1>
+                <span>iPhone · MacBook · iPad · AirPods</span>
+            </div>
+        </div>
+        <div class="cart-icon" onclick="toggleCart()">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/>
+            </svg>
+            <span class="cart-count" id="cartCount">0</span>
+        </div>
+    </div>
+</header>
 
-  <footer class="footer"><strong>apple select</strong><span>好設計，值得每天使用。© 2026 Apple Select</span></footer>
-  <aside class="drawer" id="drawer" aria-hidden="true"><div class="drawer-panel"><div class="drawer-top"><h2>你的購物袋</h2><button class="close" id="closeDrawer" aria-label="關閉購物袋">×</button></div><div class="cart-items" id="cartItems"><p class="empty">購物袋目前是空的。</p></div><div class="cart-total"><span>小計</span><strong id="cartTotal">NT$ 0</strong></div><button class="checkout">前往結帳 →</button></div></aside>
+<!-- Navigation -->
+<nav>
+    <ul>
+        <li><a href="#iphone" class="active">iPhone</a></li>
+        <li><a href="#macbook">MacBook Pro</a></li>
+        <li><a href="#ipad">iPad</a></li>
+        <li><a href="#accessories">配件音響</a></li>
+        <li><a href="#compare">規格比較</a></li>
+        <li><a href="#service">服務優勢</a></li>
+    </ul>
+</nav>
 
-  <script>
-    const products = [
-      ['iPhone 17', 'iphone', '霧面玻璃 · A19 晶片', 29900, true], ['iPhone 17 Air', 'iphone', '超薄設計 · A19 晶片', 32900, true], ['iPhone 17 Pro', 'iphone', '鈦金屬 · Pro 相機系統', 38900, true], ['iPhone 17 Pro Max', 'iphone', '最大電池 · Pro 相機系統', 42900, true],
-      ['iPhone 18', 'iphone', '新一代設計 · 預告系列', 31900, false], ['iPhone 18 Air', 'iphone', '更薄，更輕 · 預告系列', 34900, false], ['iPhone 18 Pro', 'iphone', 'Pro 相機系統 · 預告系列', 40900, false], ['iPhone 18 Pro Max', 'iphone', '極致效能 · 預告系列', 45900, false],
-      ['MacBook Pro 14', 'mac', 'M5 · 16GB · 512GB SSD', 54900, true], ['MacBook Pro 14 Pro', 'mac', 'M5 Pro · 24GB · 1TB SSD', 69900, true], ['MacBook Pro 16 Pro', 'mac', 'M5 Pro · 48GB · 1TB SSD', 84900, true], ['MacBook Pro 16 Max', 'mac', 'M5 Max · 48GB · 1TB SSD', 104900, true],
-      ['iPad', 'ipad', 'A16 晶片 · 11 吋 Liquid Retina', 11900, true], ['iPad mini', 'ipad', 'A17 Pro 晶片 · 8.3 吋', 16900, true], ['iPad Air 11', 'ipad', 'M3 晶片 · 11 吋 Liquid Retina', 19900, true], ['iPad Air 13', 'ipad', 'M3 晶片 · 13 吋 Liquid Retina', 26900, true], ['iPad Pro 11', 'ipad', 'M5 晶片 · Ultra Retina XDR', 32900, true], ['iPad Pro 13', 'ipad', 'M5 晶片 · Ultra Retina XDR', 44900, true]
-    ].map(([name, category, description, price, available]) => ({ name, category, description, price, available }));
-    const state = { category: 'all', query: '', sort: false, cart: [] };
-    const grid = document.querySelector('#productGrid');
-    const money = value => `NT$ ${value.toLocaleString('zh-TW')}`;
-    function drawProducts() {
-      let visible = products.filter(product => (state.category === 'all' || product.category === state.category) && product.name.toLowerCase().includes(state.query.toLowerCase()));
-      if (state.sort) visible.sort((a, b) => a.price - b.price);
-      grid.innerHTML = visible.length ? visible.map((product, index) => `<article class="product"><div class="product-art ${product.category}"><div class="device ${product.category === 'iphone' ? 'phone-device' : product.category === 'mac' ? 'mac-device' : 'pad-device'}"></div></div><div class="meta"><span>${product.category}</span><span>${product.available ? 'Available now' : 'Coming soon'}</span></div><h3>${product.name}</h3><p class="product-description">${product.description}</p><div class="product-footer"><span class="price">${money(product.price)}</span>${product.available ? `<button class="add" data-add="${products.indexOf(product)}">加入購物袋 +</button>` : '<span class="coming">敬請期待</span>'}</div></article>`).join('') : '<p class="empty">找不到符合的商品，試試其他關鍵字。</p>';
-      document.querySelectorAll('[data-add]').forEach(button => button.addEventListener('click', () => addToCart(Number(button.dataset.add))));
+<!-- Hero Banner -->
+<div class="hero-banner">
+    <h2>🚀 Apple 科技新品上市</h2>
+    <p>探索 iPhone 18 系列、MacBook Pro M5 系列與 iPad Pro。極致效能，為你而造。</p>
+</div>
+
+<!-- Main Container -->
+<div class="container">
+
+    <!-- iPhone Section -->
+    <div class="section-header" id="iphone">
+        <h2>📱 iPhone 系列</h2>
+        <div class="tech-line"></div>
+        <p>A19 晶片 ｜ Pro 相機系統 ｜ Dynamic Island</p>
+    </div>
+
+    <div class="product-grid" id="iphone-products">
+        <!-- Products will be rendered by JavaScript -->
+    </div>
+
+    <!-- MacBook Section -->
+    <div class="section-header" id="macbook">
+        <h2>💻 MacBook Pro 系列</h2>
+        <div class="tech-line"></div>
+        <p>M5 晶片 ｜ Liquid Retina XDR ｜ 專業級效能</p>
+    </div>
+
+    <div class="product-grid" id="macbook-products">
+        <!-- Products will be rendered by JavaScript -->
+    </div>
+
+    <!-- iPad Section -->
+    <div class="section-header" id="ipad">
+        <h2>📟 iPad 系列</h2>
+        <div class="tech-line"></div>
+        <p>M3/M5 晶片 ｜ Ultra Retina XDR ｜ 創意無限</p>
+    </div>
+
+    <div class="product-grid" id="ipad-products">
+        <!-- Products will be rendered by JavaScript -->
+    </div>
+
+    <!-- Accessories Section -->
+    <div class="section-header" id="accessories">
+        <h2>🎧 配件與音響</h2>
+        <div class="tech-line"></div>
+        <p>AirPods ｜ Magic Keyboard ｜ Magic Mouse</p>
+    </div>
+
+    <div class="product-grid" id="accessories-products">
+        <!-- Products will be rendered by JavaScript -->
+    </div>
+
+    <!-- Comparison Table -->
+    <div class="section-header" id="compare">
+        <h2>📊 iPhone 規格比較</h2>
+        <div class="tech-line"></div>
+    </div>
+
+    <table class="comparison-table">
+        <thead>
+            <tr>
+                <th>規格</th>
+                <th>iPhone 17</th>
+                <th>iPhone 17 Pro</th>
+                <th>iPhone 18 Pro</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>晶片</td>
+                <td>A19</td>
+                <td>A19 Pro</td>
+                <td>A20 Pro</td>
+            </tr>
+            <tr>
+                <td>螢幕尺寸</td>
+                <td>6.1 吋</td>
+                <td>6.3 吋</td>
+                <td>6.5 吋</td>
+            </tr>
+            <tr>
+                <td>相機系統</td>
+                <td>48MP</td>
+                <td>48MP Pro</td>
+                <td>48MP Pro</td>
+            </tr>
+            <tr>
+                <td>最高售價</td>
+                <td>$29,900</td>
+                <td>$38,900</td>
+                <td>$45,900</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- Features Section -->
+    <div class="section-header" id="service">
+        <h2>🛡️ 服務優勢</h2>
+        <div class="tech-line"></div>
+    </div>
+
+    <div class="features">
+        <div class="feature-card">
+            <div class="feature-icon">🚚</div>
+            <h3>免費運送</h3>
+            <p>全台灣免運費，快速到貨服務</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">🛡️</div>
+            <h3>原廠保固</h3>
+            <p>所有產品均提供一年原廠保固</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">🔄</div>
+            <h3>七天鑑賞期</h3>
+            <p>收貨後七天內享有免費退換貨服務</p>
+        </div>
+        <div class="feature-card">
+            <div class="feature-icon">💳</div>
+            <h3>分期付款</h3>
+            <p>支援信用卡分期與零利率優惠</p>
+        </div>
+    </div>
+
+</div>
+
+<!-- Cart Overlay -->
+<div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
+
+<!-- Cart Sidebar -->
+<div class="cart-sidebar" id="cartSidebar">
+    <div class="cart-header">
+        <h3>🛒 購物車</h3>
+        <button class="cart-close" onclick="toggleCart()">✕</button>
+    </div>
+    <div class="cart-items" id="cartItems">
+        <div class="cart-empty">
+            <p>🛒 購物車是空的</p>
+        </div>
+    </div>
+    <div class="cart-footer">
+        <div class="cart-total">
+            <span>總計：</span>
+            <span class="total-price" id="totalPrice">NT$ 0</span>
+        </div>
+        <button class="checkout-btn" onclick="checkout()">前往結帳</button>
+    </div>
+</div>
+
+<!-- Toast Notification -->
+<div class="toast" id="toast"></div>
+
+<!-- Footer -->
+<footer>
+    <div class="footer-content">
+        <div class="footer-section">
+            <h4>產品系列</h4>
+            <ul>
+                <li><a href="#iphone">iPhone</a></li>
+                <li><a href="#macbook">MacBook Pro</a></li>
+                <li><a href="#ipad">iPad</a></li>
+                <li><a href="#accessories">配件音響</a></li>
+            </ul>
+        </div>
+        <div class="footer-section">
+            <h4>客戶服務</h4>
+            <ul>
+                <li><a href="#">訂單查詢</a></li>
+                <li><a href="#">保固狀態</a></li>
+                <li><a href="#">退貨維修</a></li>
+                <li><a href="#">常見問題</a></li>
+            </ul>
+        </div>
+        <div class="footer-section">
+            <h4>關於我們</h4>
+            <ul>
+                <li><a href="#">公司簡介</a></li>
+                <li><a href="#">門市據點</a></li>
+                <li><a href="#">加入我們</a></li>
+                <li><a href="#">聯繫客服</a></li>
+            </ul>
+        </div>
+        <div class="footer-section">
+            <h4>聯絡我們</h4>
+            <ul>
+                <li>客服專線：0800-APPLE</li>
+                <li>服務時間：週一至週五 9:00-18:00</li>
+                <li>電子信箱：service@apple3c.tw</li>
+            </ul>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>&copy; 2026 Apple 3C 科技電商. 本網站為示範用電商頁面，非 Apple 官方網站。</p>
+    </div>
+</footer>
+
+<script>
+    // Product Data
+    const products = {
+        iphone: [
+            {
+                id: 'iphone17',
+                name: 'iPhone 17',
+                series: 'A19 晶片 ｜ 6.1 吋',
+                badge: 'hot',
+                badgeText: '熱銷',
+                display: '6.1 吋 OLED',
+                chip: 'A19 晶片',
+                camera: '48MP 相機',
+                price: 29900,
+                stock: 'in-stock',
+                stockText: '庫存充足'
+            },
+            {
+                id: 'iphone17air',
+                name: 'iPhone 17 Air',
+                series: 'A19 晶片 ｜ 超薄設計',
+                badge: 'new',
+                badgeText: '新品',
+                display: '6.5 吋 OLED',
+                chip: 'A19 晶片',
+                camera: '48MP 相機',
+                price: 32900,
+                stock: 'in-stock',
+                stockText: '庫存充足'
+            },
+            {
+                id: 'iphone17pro',
+                name: 'iPhone 17 Pro',
+                series: 'A19 Pro 晶片 ｜ Pro 相機系統',
+                badge: 'hot',
+                badgeText: '人氣',
+                display: '6.3 吋 ProMotion',
+                chip: 'A19 Pro 晶片',
+                camera: '48MP Pro 系統',
+                price: 38900,
+                stock: 'in-stock',
+                stockText: '庫存充足'
+            },
+            {
+                id: 'iphone17promax',
+                name: 'iPhone 17 Pro Max',
+                series: 'A19 Pro 晶片 ｜ 最大電池續航',
+                badge: 'hot',
+                badgeText: '頂級',
+                display: '6.9 吋 ProMotion',
+                chip: 'A19 Pro 晶片',
+                camera: '48MP Pro 系統',
+                price: 42900,
+                stock: 'in-stock',
+                stockText: '庫存充足'
+            },
+            {
+                id: 'iphone18',
+                name: 'iPhone 18',
+                series: '新一代設計 ｜ 預告系列',
+                badge: 'new',
+                badgeText: '即將上市',
+                display: '待公布',
+                chip: 'A20 晶片',
+                camera: '升級相機系統',
+                price: 31900,
+                stock: 'in-stock',
+                stockText: '預購中'
+            }
+        ],
+        macbook: [
+            {
+                id: 'mbp14',
+                name: 'MacBook Pro 14',
+                series: 'M5 晶片 ｜ Liquid Retina XDR',
+                badge: 'hot',
+                badgeText: '專業首選',
+                chip: 'M5 晶片',
+                memory: '16GB 記憶體',
+                storage: '512GB SSD',
+                price: 54900,
+                stock: 'in-stock',
+                stockText: '庫存充足'
+            },
+            {
+                id: 'mbp14pro',
+                name: 'MacBook Pro 14 Pro',
+                series: 'M5 Pro 晶片 ｜ 專業效能',
+                badge: 'hot',
+                badgeText: '高效能',
+                chip: 'M5 Pro 晶片',
+                memory: '24GB 記憶體',
+                storage: '1TB SSD',
+                price: 69900,
+                stock: 'in-stock',
+                stockText: '庫存充足'
+            },
+            {
+                id: 'mbp16pro',
+                name: 'MacBook Pro 16 Pro',
+                series: 'M5 Pro 晶片 ｜ 16 吋大屏',
+                badge: 'hot',
+                badgeText: '頂級效能',
+                chip: 'M5 Pro 晶片',
+                memory: '48GB 記憶體',
+                storage: '1TB SSD',
+                price: 84900,
+                stock: 'in-stock',
+                stockText: '庫存充足'
+            },
+            {
+                id: 'mbp16max',
+                name: 'MacBook Pro 16 Max',
+                series: 'M5 Max 晶片 ｜ 極致效能',
+                badge: 'new',
+                badgeText: '旗艦',
+                chip: 'M5 Max 晶片',
+                memory: '48GB 記憶體',
+                storage: '1TB SSD',
+                price: 104900,
+                stock: 'in-stock',
+                stockText: '庫存充足'
+            }
+        ],
+        ipad: [
+            {
+                id: 'ipad',
+                name: 'iPad',
+                series: 'A16 晶片 ｜ 11 吋 Liquid Retina',
+                badge: '',
+                badgeText: '',
+                chip: 'A16 晶片',
+                display: '11 吋 Liquid Retina',
+                storage: '64GB',
+                price: 11900,
+                stock: 'in-stock',
+                stockText: '庫存充足'
+            },
+            {
+                id: 'ipadmini',
+                name: 'iPad mini',
+                series: 'A17 Pro 晶片 ｜ 8.3 吋',
+                badge: '',
+                badgeText: '',
+                chip: 'A17 Pro 晶片',
+                display: '8.3 吋 Liquid Retina',
+                storage: '128GB',
+                price: 16900,
+                stock: 'in-stock',
+                stockText: '庫存充足'
+            },
+            {
+                id: 'ipadair11',
+                name: 'iPad Air 11',
+                series: 'M3 晶片 ｜ 11 吋 Liquid Retina',
+                badge: 'new',
+                badgeText: '新品',
+                chip: 'M3 晶片',
+                display: '11 吋 Liquid Retina',
+                storage: '128GB',
+                price: 19900,
+                stock: 'in-stock',
+                stockText: '庫存充足'
+            },
+            {
+                id: 'ipadair13',
+                name: 'iPad Air 13',
+                series: 'M3 晶片 ｜ 13 吋 Liquid Retina',
+                badge: '',
+                badgeText: '',
+                chip: 'M3 晶片',
+                display: '13 吋 Liquid Retina',
+                storage: '128GB',
+                price: 26900,
+                stock: 'in-stock',
+                stockText: '庫存充足'
+            },
+            {
+                id: 'ipadpro11',
+                name: 'iPad Pro 11',
+                series: 'M5 晶片 ｜ Ultra Retina XDR',
+                badge: 'hot',
+                badgeText: '頂級',
+                chip: 'M5 晶片',
+                display: '11 吋 Ultra Retina XDR',
+                storage: '256GB',
+                price: 32900,
+                stock: 'in-stock',
+                stockText: '庫存充足'
+            },
+            {
+                id: 'ipadpro13',
+                name: 'iPad Pro 13',
+                series: 'M5 晶片 ｜ 13 吋 Ultra Retina XDR',
+                badge: 'hot',
+                badgeText: '旗艦',
+                chip: 'M5 晶片',
+                display: '13 吋 Ultra Retina XDR',
+                storage: '256GB',
+                price: 44900,
+                stock: 'in-stock',
+                stockText: '庫存充足'
+            }
+        ],
+        accessories: [
+            {
+                id: 'airpodspro',
+                name: 'AirPods Pro',
+                series: 'H2 晶片 ｜ 主動降噪',
+                badge: 'hot',
+                badgeText: '人氣',
+                chip: 'H2 晶片',
+                feature: '主動降噪',
+                battery: '最高 6 小時',
+                price: 8990,
+                stock: 'in-stock',
+                stockText: '庫存充足'
+            },
+            {
+                id: 'airpodsmax',
+                name: 'AirPods Max',
+                series: 'H2 晶片 ｜ 高保真音質',
+                badge: '',
+                badgeText: '',
+                chip: 'H2 晶片',
+                feature: '空間音訊',
+                battery: '最高 20 小時',
+                price: 24900,
+                stock: 'in-stock',
+                stockText: '庫存充足'
+            },
+            {
+                id: 'magickeyboard',
+                name: 'Magic Keyboard',
+                series: 'Touch ID ｜ 繁體中文鍵盤',
+                badge: '',
+                badgeText: '',
+                chip: '-',
+                feature: 'Touch ID',
+                battery: '可充電電池',
+                price: 9900,
+                stock: 'in-stock',
+                stockText: '庫存充足'
+            },
+            {
+                id: 'magicmouse',
+                name: 'Magic Mouse',
+                series: '多點觸控Gesture ｜ 無線',
+                badge: '',
+                badgeText: '',
+                chip: '-',
+                feature: '多點觸控',
+                battery: '可充電電池',
+                price: 3490,
+                stock: 'in-stock',
+                stockText: '庫存充足'
+            }
+        ]
+    };
+
+    // Shopping Cart
+    let cart = [];
+
+    // Render Products
+    function renderProducts() {
+        Object.keys(products).forEach(category => {
+            const container = document.getElementById(`${category}-products`);
+            if (container) {
+                container.innerHTML = products[category].map(product => createProductCard(product)).join('');
+            }
+        });
     }
-    function addToCart(index) { state.cart.push(products[index]); updateCart(); document.querySelector('#bagButton').animate([{ transform: 'scale(1)' }, { transform: 'scale(1.12)' }, { transform: 'scale(1)' }], { duration: 350 }); }
-    function updateCart() { document.querySelector('#bagCount').textContent = state.cart.length; document.querySelector('#cartItems').innerHTML = state.cart.length ? state.cart.map((item, index) => `<div class="cart-item"><div><strong>${item.name}</strong><small>${money(item.price)}</small></div><button class="remove" data-remove="${index}">移除 ×</button></div>`).join('') : '<p class="empty">購物袋目前是空的。</p>'; document.querySelector('#cartTotal').textContent = money(state.cart.reduce((total, item) => total + item.price, 0)); document.querySelectorAll('[data-remove]').forEach(button => button.addEventListener('click', () => { state.cart.splice(Number(button.dataset.remove), 1); updateCart(); })); }
-    document.querySelectorAll('[data-category]').forEach(button => button.addEventListener('click', () => { state.category = button.dataset.category; document.querySelectorAll('[data-category]').forEach(item => item.classList.toggle('active', item === button)); drawProducts(); }));
-    document.querySelector('#searchInput').addEventListener('input', event => { state.query = event.target.value; drawProducts(); });
-    document.querySelector('#sortButton').addEventListener('click', event => { state.sort = !state.sort; event.currentTarget.textContent = state.sort ? '價格：低至高 ↕' : '價格排序 ↕'; drawProducts(); });
-    document.querySelector('#searchFocus').addEventListener('click', () => document.querySelector('#searchInput').focus());
-    const drawer = document.querySelector('#drawer');
-    document.querySelector('#bagButton').addEventListener('click', () => { drawer.classList.add('open'); drawer.setAttribute('aria-hidden', 'false'); });
-    document.querySelector('#closeDrawer').addEventListener('click', () => { drawer.classList.remove('open'); drawer.setAttribute('aria-hidden', 'true'); });
-    drawer.addEventListener('click', event => { if (event.target === drawer) document.querySelector('#closeDrawer').click(); });
-    document.querySelectorAll('[data-nav]').forEach(link => link.addEventListener('click', () => { state.category = link.dataset.nav; document.querySelector(`[data-category="${link.dataset.nav}"]`).click(); }));
-    drawProducts();
-  </script>
+
+    function createProductCard(product) {
+        const badgeHtml = product.badge ? `<div class="product-badge ${product.badge}">${product.badgeText}</div>` : '';
+        const stockClass = product.stock === 'in-stock' ? 'in-stock' : product.stock === 'low-stock' ? 'low-stock' : 'out-of-stock';
+
+        let specsHtml = '';
+        if (product.chip) specsHtml += `<div class="spec-item"><strong>晶片</strong>${product.chip}</div>`;
+        if (product.display) specsHtml += `<div class="spec-item"><strong>螢幕</strong>${product.display}</div>`;
+        if (product.memory) specsHtml += `<div class="spec-item"><strong>記憶體</strong>${product.memory}</div>`;
+        if (product.storage) specsHtml += `<div class="spec-item"><strong>儲存空間</strong>${product.storage}</div>`;
+        if (product.camera) specsHtml += `<div class="spec-item"><strong>相機</strong>${product.camera}</div>`;
+        if (product.feature) specsHtml += `<div class="spec-item"><strong>功能</strong>${product.feature}</div>`;
+        if (product.battery) specsHtml += `<div class="spec-item"><strong>電池</strong>${product.battery}</div>`;
+
+        const deviceIcon = product.series.includes('iPhone') ? '📱' : 
+                           product.series.includes('MacBook') ? '💻' : 
+                           product.series.includes('iPad') ? '📟' : 
+                           product.series.includes('AirPods') ? '🎧' : '🎵';
+
+        return `
+            <div class="product-card">
+                ${badgeHtml}
+                <div class="product-image">
+                    <div class="device-icon">${deviceIcon}</div>
+                </div>
+                <div class="product-info">
+                    <div class="product-name">${product.name}</div>
+                    <div class="product-series">${product.series}</div>
+                    <div class="product-specs">
+                        ${specsHtml}
+                    </div>
+                    <div class="product-price-section">
+                        <div class="product-price">
+                            <span class="currency">NT$</span> ${product.price.toLocaleString()}
+                        </div>
+                        <div class="stock-status ${stockClass}">${product.stockText}</div>
+                    </div>
+                    <button class="add-to-cart-btn" onclick="addToCart('${product.id}')" ${product.stock === 'out-of-stock' ? 'disabled' : ''}>
+                        🛒 ${product.stock === 'out-of-stock' ? '暫無庫存' : '加入購物車'}
+                    </button>
+                </div>
+            </div>
+        `;
+    }
+
+    // Add to Cart
+    function addToCart(productId) {
+        const allProducts = [...Object.values(products).flat()];
+        const product = allProducts.find(p => p.id === productId);
+
+        if (!product) return;
+
+        const existingItem = cart.find(item => item.id === productId);
+        if (existingItem) {
+            existingItem.qty += 1;
+        } else {
+            cart.push({ ...product, qty: 1 });
+        }
+
+        updateCart();
+        showToast(`已將 ${product.name} 加入購物車！`);
+    }
+
+    // Update Cart UI
+    function updateCart() {
+        const cartCount = document.getElementById('cartCount');
+        const cartItems = document.getElementById('cartItems');
+        const totalPrice = document.getElementById('totalPrice');
+
+        const totalItems = cart.reduce((sum, item) => sum + item.qty, 0);
+        const totalAmount = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+
+        cartCount.textContent = totalItems;
+        totalPrice.textContent = `NT$ ${totalAmount.toLocaleString()}`;
+
+        if (cart.length === 0) {
+            cartItems.innerHTML = '<div class="cart-empty"><p>🛒 購物車是空的</p></div>';
+            return;
+        }
+
+        cartItems.innerHTML = cart.map(item => `
+            <div class="cart-item">
+                <div class="cart-item-image">${item.series.includes('iPhone') ? '📱' : item.series.includes('MacBook') ? '💻' : item.series.includes('iPad') ? '📟' : '🎧'}</div>
+                <div class="cart-item-info">
+                    <div class="cart-item-name">${item.name}</div>
+                    <div class="cart-item-price">NT$ ${item.price.toLocaleString()}</div>
+                    <div class="cart-item-qty">
+                        <button class="qty-btn" onclick="updateQty('${item.id}', -1)">−</button>
+                        <span>${item.qty}</span>
+                        <button class="qty-btn" onclick="updateQty('${item.id}', 1)">+</button>
+                    </div>
+                </div>
+                <button class="cart-item-remove" onclick="removeFromCart('${item.id}')">🗑️</button>
+            </div>
+        `).join('');
+    }
+
+    // Update Quantity
+    function updateQty(productId, change) {
+        const item = cart.find(i => i.id === productId);
+        if (!item) return;
+
+        item.qty += change;
+        if (item.qty <= 0) {
+            removeFromCart(productId);
+            return;
+        }
+
+        updateCart();
+    }
+
+    // Remove from Cart
+    function removeFromCart(productId) {
+        cart = cart.filter(i => i.id !== productId);
+        updateCart();
+        showToast('已從購物車移除');
+    }
+
+    // Toggle Cart
+    function toggleCart() {
+        document.getElementById('cartOverlay').classList.toggle('active');
+        document.getElementById('cartSidebar').classList.toggle('active');
+    }
+
+    // Checkout
+    function checkout() {
+        if (cart.length === 0) {
+            showToast('購物車是空的，請先加入商品！');
+            return;
+        }
+
+        const totalAmount = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+        const itemCount = cart.reduce((sum, item) => sum + item.qty, 0);
+
+        alert(`訂單總計：\n\n商品數量：${itemCount} 項\n總金額：NT$ ${totalAmount.toLocaleString()}\n\n（此為示範頁面，點擊確定後將導向結帳流程）`);
+    }
+
+    // Show Toast
+    function showToast(message) {
+        const toast = document.getElementById('toast');
+        toast.textContent = message;
+        toast.className = 'toast show';
+
+        setTimeout(() => {
+            toast.classList.remove('show');
+        }, 2500);
+    }
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', () => {
+        renderProducts();
+    });
+</script>
+
 </body>
 </html>
