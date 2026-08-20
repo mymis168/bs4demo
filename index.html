@@ -1,0 +1,1597 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BeautifulSoup4 完整教學 - 從基礎到進階</title>
+    <style>
+        :root {
+            --primary-color: #4a90d9;
+            --secondary-color: #2c3e50;
+            --accent-color: #27ae60;
+            --bg-color: #f8f9fa;
+            --text-color: #333;
+            --code-bg: #2d2d2d;
+            --border-color: #dee2e6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Microsoft JhengHei', 'Segoe UI', Arial, sans-serif;
+            line-height: 1.8;
+            color: var(--text-color);
+            background: var(--bg-color);
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        nav {
+            background: var(--secondary-color);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            transition: background 0.3s;
+        }
+
+        nav a:hover {
+            background: var(--primary-color);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        section {
+            background: white;
+            margin: 2rem 0;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        h2 {
+            color: var(--secondary-color);
+            border-bottom: 3px solid var(--primary-color);
+            padding-bottom: 0.5rem;
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+        }
+
+        h3 {
+            color: var(--primary-color);
+            margin-top: 1.5rem;
+            margin-bottom: 1rem;
+            font-size: 1.4rem;
+        }
+
+        h4 {
+            color: var(--secondary-color);
+            margin-top: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            margin-left: 0.5rem;
+        }
+
+        .badge-basic {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .badge-intermediate {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .badge-advanced {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        code {
+            background: var(--code-bg);
+            color: #f8f8f2;
+            padding: 0.2rem 0.4rem;
+            border-radius: 3px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.9em;
+        }
+
+        pre {
+            background: var(--code-bg);
+            color: #f8f8f2;
+            padding: 1.5rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 1rem 0;
+            line-height: 1.6;
+        }
+
+        pre code {
+            background: none;
+            padding: 0;
+        }
+
+        .comment { color: #75715e; }
+        .keyword { color: #00a8c8; }
+        .string { color: #e6db74; }
+        .function { color: #f92672; }
+        .decorator { color: #a6e22e; }
+        .number { color: #ae81ff; }
+
+        .example-box {
+            border-left: 4px solid var(--primary-color);
+            background: #f0f4f8;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0 4px 4px 0;
+        }
+
+        .tip-box {
+            border-left: 4px solid var(--accent-color);
+            background: #e8f5e9;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0 4px 4px 0;
+        }
+
+        .warning-box {
+            border-left: 4px solid #f39c12;
+            background: #fff8e1;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0 4px 4px 0;
+        }
+
+        .output-box {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 1rem;
+            border-radius: 4px;
+            margin: 0.5rem 0;
+            font-family: 'Consolas', monospace;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+
+        th, td {
+            padding: 0.75rem;
+            border: 1px solid var(--border-color);
+            text-align: left;
+        }
+
+        th {
+            background: var(--secondary-color);
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background: var(--bg-color);
+        }
+
+        ul, ol {
+            margin-left: 2rem;
+            margin-top: 0.5rem;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        footer {
+            background: var(--secondary-color);
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+
+        @media (max-width: 768px) {
+            header h1 { font-size: 1.8rem; }
+            nav ul { flex-direction: column; align-items: center; }
+            section { padding: 1rem; }
+            pre { padding: 1rem; font-size: 0.85rem; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>📚 BeautifulSoup4 完整教學</h1>
+    <p>從基礎到進階，掌握 Python 網頁爬蟲資料解析核心技能</p>
+</header>
+
+<nav>
+    <ul>
+        <li><a href="#intro">簡介</a></li>
+        <li><a href="#install">安裝</a></li>
+        <li><a href="#basic">基礎用法</a></li>
+        <li><a href="#navigate">樹狀導航</a></li>
+        <li><a href="#search">搜尋方法</a></li>
+        <li><a href="#modify">修改文件</a></li>
+        <li><a href="#advanced">進階技巧</a></li>
+        <li><a href="#examples">實戰範例</a></li>
+        <li><a href="#bestpractices">最佳實踐</a></li>
+    </ul>
+</nav>
+
+<div class="container">
+
+<!-- ==================== 簡介 ==================== -->
+<section id="intro">
+    <h2>一、BeautifulSoup4 簡介</h2>
+
+    <h3>1.1 什麼是 BeautifulSoup？</h3>
+    <p>BeautifulSoup 是一個 Python 套件，用於從 HTML 和 XML 文件中提取資料。它提供了簡單的函數和方法，讓新手也能輕鬆地搜尋、定位和修改樹狀結構中的節點。</p>
+
+    <h3>1.2 核心特點</h3>
+    <ul>
+        <li><strong>易用性</strong>：提供簡潔的 Pythonic API</li>
+        <li><strong>容錯能力</strong>：自動處理格式不良的 HTML</li>
+        <li><strong>多解析器支援</strong>：支援 html.parser, lxml, html5lib 等多種解析器</li>
+        <li><strong>國際化</strong>：支援多種字元編碼自動偵測</li>
+        <li><strong>社區活躍</strong>：開源專案，豐富的生態系</li>
+    </ul>
+
+    <h3>1.3 BeautifulSoup 在爬蟲流程中的位置</h3>
+    <div class="example-box">
+        <pre><code># 整體流程
+requests.get(url)  ──→  取得 HTML 原始碼
+         │
+         ▼
+BeautifulSoup(html, parser)  ──→  建立解析樹
+         │
+         ▼
+find() / find_all()  ──→  提取目標資料
+         │
+         ▼
+儲存 / 分析 / 後續處理</code></pre>
+    </div>
+
+    <h3>1.4 與其他工具比較</h3>
+    <table>
+        <tr>
+            <th>工具</th>
+            <th>優點</th>
+            <th>缺點</th>
+        </tr>
+        <tr>
+            <td>BeautifulSoup</td>
+            <td>易學易用、容錯強</td>
+            <td>純 Python 實現，速度較慢</td>
+        </tr>
+        <tr>
+            <td>lxml (直接)</td>
+            <td>速度極快</td>
+            <td>API 較複雜</td>
+        </tr>
+        <tr>
+            <td>Scrapy</td>
+            <td>完整爬蟲框架</td>
+            <td>學習曲線陡峭</td>
+        </tr>
+        <tr>
+            <td>selenium</td>
+            <td>支援 JavaScript 渲染</td>
+            <td>資源消耗大</td>
+        </tr>
+    </table>
+</section>
+
+<!-- ==================== 安裝 ==================== -->
+<section id="install">
+    <h2>二、安裝與設定</h2>
+
+    <h3>2.1 安裝 BeautifulSoup4</h3>
+    <pre><code><span class="comment"># 使用 pip 安裝</span>
+pip install beautifulsoup4
+
+<span class="comment"># 建議同時安裝 lxml 解析器（速度更快）</span>
+pip install lxml
+
+<span class="comment"># 或安裝 html5lib（容錯能力最強）</span>
+pip install html5lib</code></pre>
+
+    <h3>2.2 驗證安裝</h3>
+    <pre><code><span class="keyword">from</span> bs4 <span class="keyword">import</span> BeautifulSoup
+
+<span class="comment"># 檢查版本</span>
+<span class="function">print</span>(BeautifulSoup.__version__)
+<span class="comment"># 輸出: 4.12.x (或更新版本)</span>
+<span class="function">print</span>(<span class="string">"BeautifulSoup4 安裝成功！"</span>)</code></pre>
+
+    <h3>2.3 解析器選擇指南</h3>
+    <table>
+        <tr>
+            <th>解析器</th>
+            <th>安裝需求</th>
+            <th>速度</th>
+            <th>容錯能力</th>
+        </tr>
+        <tr>
+            <td><code>html.parser</code></td>
+            <td>內建（無需安裝）</td>
+            <td>中等</td>
+            <td>中等</td>
+        </tr>
+        <tr>
+            <td><code>lxml</code></td>
+            <td>需安裝 lxml</td>
+            <td>⭐ 極快</td>
+            <td>良好</td>
+        </tr>
+        <tr>
+            <td><code>html5lib</code></td>
+            <td>需安裝 html5lib</td>
+            <td>慢</td>
+            <td>⭐ 最強</td>
+        </tr>
+    </table>
+
+    <div class="tip-box">
+        <strong>💡 建議：</strong>開發階段使用 <code>html.parser</code>（無需額外安裝），生產環境使用 <code>lxml</code>（效能最佳）。
+    </div>
+</section>
+
+<!-- ==================== 基礎用法 ==================== -->
+<section id="basic">
+    <h2>三、基礎用法 <span class="badge badge-basic">基礎</span></h2>
+
+    <h3>3.1 建立 BeautifulSoup 物件</h3>
+    <pre><code><span class="keyword">from</span> bs4 <span class="keyword">import</span> BeautifulSoup
+
+<span class="comment"># ===== 方法 1：從字串解析 =====</span>
+html_content = <span class="string">"""
+<html>
+    <body>
+        <h1>Hello World</h1>
+        <p class="title">Welcome to BeautifulSoup</p>
+    </body>
+</html>
+"""</span>
+
+<span class="comment"># 建立 BeautifulSoup 物件</span>
+soup = BeautifulSoup(html_content, <span class="string">"html.parser"</span>)
+
+<span class="comment"># ===== 方法 2：從檔案讀取 =====</span>
+<span class="keyword">with</span> <span class="function">open</span>(<span class="string">"sample.html"</span>, encoding=<span class="string">"utf-8"</span>) <span class="keyword">as</span> f:
+    soup = BeautifulSoup(f, <span class="string">"html.parser"</span>)
+
+<span class="comment"># ===== 方法 3：從 requests 回應解析 =====</span>
+<span class="keyword">import</span> requests
+
+response = requests.<span class="function">get</span>(<span class="string">"https://example.com"</span>)
+soup = BeautifulSoup(response.content, <span class="string">"html.parser"</span>)</code></pre>
+
+    <h3>3.2 格式化輸出</h3>
+    <pre><code><span class="comment"># prettify() - 格式化輸出 HTML</span>
+<span class="function">print</span>(soup.prettify())
+
+<span class="comment"># 輸出會自動縮排，方便閱讀</span>
+<span class="comment"># <html></span>
+<span class="comment">#   <body></span>
+<span class="comment">#     <h1></span>
+<span class="comment">#       Hello World</span>
+<span class="comment">#     </h1></span>
+<span class="comment">#     <p class="title"></span>
+<span class="comment">#       Welcome to BeautifulSoup</span>
+<span class="comment">#     </p></span>
+<span class="comment">#   </body></span>
+<span class="comment"># </html></span>
+
+<span class="comment"># 獲取純文字內容</span>
+<span class="function">print</span>(soup.get_text())
+<span class="comment"># Hello World</span>
+<span class="comment"># Welcome to BeautifulSoup</span></code></pre>
+
+    <h3>3.3 解析樹的概念</h3>
+    <div class="example-box">
+        <h4>HTML 文件 → 解析樹（Tree）</h4>
+        <pre><code>HTML 文件結構：
+<html>              ← Tag (標籤節點)
+  <body>            ← Tag
+    <h1>Hello</h1>  ← Tag + NavigableString (文字節點)
+  </body>
+</html>
+
+BeautifulSoup 物件 = 整個文件的根節點
+Tag = HTML 標籤（如 <div>, <p>）
+NavigableString = 標籤內的文字內容
+Comment = HTML 註解（特殊类型的 NavigableString）</code></pre>
+    </div>
+
+    <h3>3.4 基本屬性檢查</h3>
+    <pre><code><span class="keyword">from</span> bs4 <span class="keyword">import</span> BeautifulSoup, Comment
+
+html = <span class="string">"<div id="main" class="container"><p>Hello</p><!-- comment --></div>"</span>
+soup = BeautifulSoup(html, <span class="string">"html.parser"</span>)
+
+<span class="comment"># 檢查物件類型</span>
+<span class="function">print</span>(<span class="function">type</span>(soup))          <span class="comment"><class 'BeautifulSoup'></span>
+<span class="function">print</span>(<span class="function">type</span>(soup.div))      <span class="comment"><class 'bs4.element.Tag'></span>
+<span class="function">print</span>(<span class="function">type</span>(soup.p.string))  <span class="comment"><class 'bs4.element.NavigableString'></span>
+
+<span class="comment"># 檢查標籤名稱</span>
+<span class="function">print</span>(soup.div.name)        <span class="comment">'div'</span>
+
+<span class="comment"># 檢查屬性</span>
+<span class="function">print</span>(soup.div.attrs)       <span class="comment">{'id': 'main', 'class': ['container']}</span>
+
+<span class="comment"># 獲取屬性值</span>
+<span class="function">print</span>(soup.div.<span class="function">get</span>(<span class="string">"id"</span>))   <span class="comment">'main'</span></code></pre>
+</section>
+
+<!-- ==================== 樹狀導航 ==================== -->
+<section id="navigate">
+    <h2>四、樹狀導航 <span class="badge badge-basic">基礎</span></h2>
+
+    <h3>4.1 父子關係導航</h3>
+    <pre><code><span class="keyword">from</span> bs4 <span class="keyword">import</span> BeautifulSoup
+
+html = <span class="string">"""
+<div id="parent">
+    <p class="child">文字1</p>
+    <p class="child">文字2</p>
+</div>
+"""</span>
+soup = BeautifulSoup(html, <span class="string">"html.parser"</span>)
+
+<span class="comment"># ===== 子節點導航 =====</span>
+parent = soup.div
+<span class="comment"># children 返回所有直接子節點（不含孫節點）</span>
+<span class="function">print</span>(<span class="function">list</span>(parent.children))
+<span class="comment"># [ '\n    ', <p class="child">文字1</p>, '\n    ', <p class="child">文字2</p>, '\n'</span>
+
+<span class="comment"># 只獲取子 Tag（過濾掉文字和空白）</span>
+<span class="function">print</span>(<span class="function">list</span>(parent.find_all(<span class="keyword">lambda</span> x: x.name)))
+<span class="comment"># [<p class="child">文字1</p>, <p class="child">文字2</p>]</span>
+
+<span class="comment"># ===== 父節點導航 =====</span>
+child = soup.p
+<span class="function">print</span>(child.parent)       <span class="comment"><div id="parent">...</div></span>
+<span class="function">print</span>(child.parent.name)  <span class="comment">'div'</span>
+
+<span class="comment"># ===== 兄弟節點導航 =====</span>
+p1 = soup.find(<span class="string">"p"</span>)
+p2 = p1.find_next_sibling(<span class="string">"p"</span>)
+<span class="function">print</span>(p2)                 <span class="comment"><p class="child">文字2</p></span>
+
+<span class="comment"># 獲取所有後續兄弟節點</span>
+<span class="function">print</span>(<span class="function">list</span>(p1.find_next_siblings(<span class="string">"p"</span>)))</code></pre>
+
+    <h3>4.2 內容提取方法</h3>
+    <pre><code><span class="keyword">from</span> bs4 <span class="keyword">import</span> BeautifulSoup
+
+html = <span class="string">"<div id="main"><p class="text">Hello <strong>World</strong>!</p></div>"</span>
+soup = BeautifulSoup(html, <span class="string">"html.parser"</span>)
+p_tag = soup.p
+
+<span class="comment"># ===== 提取文字 =====</span>
+<span class="comment"># .text 或 .get_text() - 獲取所有文字（包含子標籤）</span>
+<span class="function">print</span>(p_tag.text)         <span class="comment">"Hello World!"</span>
+<span class="function">print</span>(p_tag.get_text())   <span class="comment">"Hello World!"</span>
+
+<span class="comment"># 可以指定分隔符</span>
+<span class="function">print</span>(p_tag.get_text(<span class="string">" "</span>)) <span class="comment">"Hello World!"</span>
+<span class="function">print</span>(p_tag.get_text(<span class="string">"|"</span>)) <span class="comment">"Hello|World!"</span>
+<span class="function">print</span>(p_tag.get_text(strip=<span class="keyword">True</span>)) <span class="comment"># 去除空白</span>
+
+<span class="comment"># ===== 獲取屬性 =====</span>
+<span class="function">print</span>(p_tag.<span class="function">get</span>(<span class="string">"class"</span>))  <span class="comment">['text']</span>
+<span class="function">print</span>(p_tag.<span class="function">get</span>(<span class="string">"id"</span>))     <span class="comment">'main'</span>
+
+<span class="comment"># ===== 獲取標籤名稱 =====</span>
+<span class="function">print</span>(p_tag.name)          <span class="comment">'p'</span></code></pre>
+
+    <h3>4.3 CSS 選擇器</h3>
+    <pre><code><span class="keyword">from</span> bs4 <span class="keyword">import</span> BeautifulSoup
+
+html = <span class="string">"""
+<div class="container">
+    <div class="item"><p>第一段</p></div>
+    <div class="item"><p>第二段</p></div>
+    <div id="special"><p>第三段</p></div>
+</div>
+"""</span>
+soup = BeautifulSoup(html, <span class="string">"html.parser"</span>)
+
+<span class="comment"># select() - 使用 CSS 選擇器（返回列表）</span>
+
+<span class="comment"># 選擇所有 .item</span>
+items = soup.select(<span class="string">".item"</span>)
+
+<span class="comment"># 選擇 #special</span>
+special = soup.select(<span class="string">"#special"</span>)
+
+<span class="comment"># 選擇 div > p（直接子節點）</span>
+direct_p = soup.select(<span class="string">"div > p"</span>)
+
+<span class="comment"># 選擇 div p（所有後代）</span>
+all_p = soup.select(<span class="string">"div p"</span>)
+
+<span class="comment"># 選擇第一個匹配</span>
+first_item = soup.select_one(<span class="string">".item"</span>)
+
+<span class="comment"># 複雜選擇器</span>
+<span class="comment"># 選擇 class 包含 item 的 div 下的第二個 p</span>
+result = soup.select(<span class="string">"div.item p:nth-of-type(2)"</span>)</code></pre>
+</section>
+
+<!-- ==================== 搜尋方法 ==================== -->
+<section id="search">
+    <h2>五、搜尋方法 <span class="badge badge-intermediate">進階</span></h2>
+
+    <h3>5.1 find() 與 find_all() 基礎</h3>
+    <pre><code><span class="keyword">from</span> bs4 <span class="keyword">import</span> BeautifulSoup
+
+html = <span class="string">"""
+<div class="container">
+    <p class="intro">歡迎</p>
+    <p class="content">這是第一段內容</p>
+    <p class="content">這是第二段內容</p>
+    <a href="https://example1.com">連結1</a>
+    <a href="https://example2.com">連結2</a>
+</div>
+"""</span>
+soup = BeautifulSoup(html, <span class="string">"html.parser"</span>)
+
+<span class="comment"># ===== find_all() - 返回所有匹配元素（列表） =====</span>
+
+<span class="comment"># 按標籤名稱搜尋</span>
+all_p = soup.find_all(<span class="string">"p"</span>)
+<span class="function">print</span>(<span class="function">len</span>(all_p))  <span class="comment"># 3</span>
+
+<span class="comment"># 按 class 搜尋（注意：class_ 帶底線）</span>
+contents = soup.find_all(<span class="string">"p"</span>, class_<span class="string">="content"</span>)
+
+<span class="comment"># 按屬性搜尋</span>
+links = soup.find_all(<span class="string">"a"</span>, href=<span class="keyword">True</span>)
+
+<span class="comment"># 按文字內容搜尋</span>
+target = soup.find_all(<span class="string">"p"</span>, string_<span class="string">="歡迎"</span>)
+<span class="comment"># Python 3.4+ 推薦使用 text 參數</span>
+target = soup.find_all(<span class="string">"p"</span>, text_<span class="string">="歡迎"</span>)
+
+<span class="comment"># ===== find() - 只返回第一個匹配元素 =====</span>
+first_p = soup.find(<span class="string">"p"</span>)
+first_link = soup.find(<span class="string">"a"</span>)</code></pre>
+
+    <h3>5.2 進階搜尋技巧</h3>
+    <pre><code><span class="keyword">from</span> bs4 <span class="keyword">import</span> BeautifulSoup
+<span class="keyword">import</span> re
+
+html = <span class="string">"""
+<div class="container">
+    <p id="intro">歡迎</p>
+    <p class="content main">內容1</p>
+    <p class="content">內容2</p>
+    <a href="/page/1">第1頁</a>
+    <a href="/page/2">第2頁</a>
+</div>
+"""</span>
+soup = BeautifulSoup(html, <span class="string">"html.parser"</span>)
+
+<span class="comment"># ===== 使用正則表達式 =====</span>
+
+<span class="comment"># 搜尋 class 符合正則的標籤</span>
+pattern = re.<span class="function">compile</span>(<span class="string">r"^content"</span>)
+results = soup.find_all(<span class="string">"p"</span>, class_<span class="string">=pattern</span>)
+
+<span class="comment"># 搜尋 href 符合正則的連結</span>
+pattern = re.<span class="function">compile</span>(<span class="string">r"/page/\d+"</span>)
+links = soup.find_all(<span class="string">"a"</span>, href<span class="string">=pattern</span>)
+
+<span class="comment"># ===== 使用 lambda 函數 =====</span>
+
+<span class="comment"># 搜尋所有有 id 屬性的標籤</span>
+results = soup.find_all(<span class="keyword">lambda</span> tag: tag.has_attr(<span class="string">"id"</span>))
+
+<span class="comment"># 搜尋特定條件的標籤</span>
+results = soup.find_all(<span class="keyword">lambda</span> tag:
+    tag.name == <span class="string">"a"</span> <span class="keyword">and</span> tag.has_attr(<span class="string">"href"</span>))
+
+<span class="comment"># ===== 多個條件組合 =====</span>
+
+<span class="comment"># 同時滿足多個條件</span>
+results = soup.find_all(<span class="string">"p"</span>, class_<span class="string">="content"</span>)
+
+<span class="comment"># 搜尋 class 包含特定值的標籤</span>
+results = soup.find_all(<span class="string">"p"</span>, class_<span class="string">="content"</span>)</code></pre>
+
+    <h3>5.3 限制返回數量</h3>
+    <pre><code><span class="comment"># find_all() 支援 limit 參數</span>
+results = soup.find_all(<span class="string">"p"</span>, limit<span class="string">=2</span>)
+<span class="comment"># 最多返回 2 個結果</span>
+
+<span class="comment"># find() 等同於 find_all(limit=1)</span>
+first_result = soup.find(<span class="string">"p"</span>)
+<span class="comment"># 等同於</span>
+first_result = soup.find_all(<span class="string">"p"</span>, limit<span class="string">=1</span>)[<span class="number">0</span>]</code></pre>
+
+    <h3>5.4 搜尋參數完整對照表</h3>
+    <table>
+        <tr>
+            <th>參數</th>
+            <th>說明</th>
+            <th>範例</th>
+        </tr>
+        <tr>
+            <td>標籤名稱</td>
+            <td>第一個位置參數指定標籤名</td>
+            <td><code>find_all("div")</code></td>
+        </tr>
+        <tr>
+            <td><code>class_</code></td>
+            <td>按 class 屬性搜尋</td>
+            <td><code>find_all("p", class_="text")</code></td>
+        </tr>
+        <tr>
+            <td><code>id</code></td>
+            <td>按 id 屬性搜尋</td>
+            <td><code>find_all(id="main")</code></td>
+        </tr>
+        <tr>
+            <td><code>text</code></td>
+            <td>按文字內容搜尋</td>
+            <td><code>find_all(text="目標")</code></td>
+        </tr>
+        <tr>
+            <td><code>attrs</code></td>
+            <td>自訂屬性字典</td>
+            <td><code>find_all(attrs={"data-type": "a"})</code></td>
+        </tr>
+        <tr>
+            <td><code>recursive</code></td>
+            <td>是否只搜尋子節點</td>
+            <td><code>find_all("p", recursive=False)</code></td>
+        </tr>
+        <tr>
+            <td><code>limit</code></td>
+            <td>限制返回數量</td>
+            <td><code>find_all("p", limit=5)</code></td>
+        </tr>
+        <tr>
+            <td><code>string</code></td>
+            <td>按文字搜尋（同 text）</td>
+            <td><code>find_all(string="目標")</code></td>
+        </tr>
+    </table>
+</section>
+
+<!-- ==================== 修改文件 ==================== -->
+<section id="modify">
+    <h2>六、修改文件 <span class="badge badge-intermediate">進階</span></h2>
+
+    <h3>6.1 新增節點</h3>
+    <pre><code><span class="keyword">from</span> bs4 <span class="keyword">import</span> BeautifulSoup, NavigableString, Tag
+
+html = <span class="string">"<div><p>原始內容</p></div>"</span>
+soup = BeautifulSoup(html, <span class="string">"html.parser"</span>)
+
+<span class="comment"># ===== 使用 append() 新增子節點 =====</span>
+p_tag = soup.p
+new_tag = soup.new_tag(<span class="string">"span"</span>, class_<span class="string">="highlight"</span>)
+new_tag.string = <span class="string">"新增的文字"</span>
+p_tag.append(new_tag)
+
+<span class="comment"># ===== 使用 insert() 在指定位置插入 =====</span>
+p_tag.insert(<span class="number">0</span>, <span class="string">"在開頭插入"</span>)
+
+<span class="comment"># ===== 使用 insert_before() / insert_after() =====</span>
+existing_tag = soup.p
+new_tag = soup.new_tag(<span class="string">"br"</span>)
+existing_tag.insert_before(new_tag)</code></pre>
+
+    <h3>6.2 刪除節點</h3>
+    <pre><code><span class="keyword">from</span> bs4 <span class="keyword">import</span> BeautifulSoup
+
+html = <span class="string">"""
+<div>
+    <p class="keep">保留</p>
+    <p class="remove">刪除</p>
+    <p class="remove">也刪除</p>
+</div>
+"""</span>
+soup = BeautifulSoup(html, <span class="string">"html.parser"</span>)
+
+<span class="comment"># ===== 使用 decompose() - 完全刪除（無法恢復） =====</span>
+to_remove = soup.find_all(<span class="string">"p"</span>, class_<span class="string">="remove"</span>)
+<span class="keyword">for</span> tag <span class="keyword">in</span> to_remove:
+    tag.decompose()
+
+<span class="comment"># ===== 使用 extract() - 刪除但保留物件（可恢復） =====</span>
+to_extract = soup.find(<span class="string">"p"</span>, class_<span class="string">="remove"</span>)
+extracted = to_extract.extract()
+<span class="comment"># extracted 現在是一個獨立的 Tag 物件</span>
+
+<span class="comment"># 可以將提取的節點移動到其他位置</span>
+soup.div.append(extracted)</code></pre>
+
+    <h3>6.3 替換節點</h3>
+    <pre><code><span class="keyword">from</span> bs4 <span class="keyword">import</span> BeautifulSoup
+
+html = <span class="string">"<p>舊內容</p>"</span>
+soup = BeautifulSoup(html, <span class="string">"html.parser"</span>)
+
+<span class="comment"># ===== 使用 replace_with() =====</span>
+old_p = soup.p
+new_html = <span class="string">"<span class="new">新內容</span>"</span>
+new_tag = BeautifulSoup(new_html, <span class="string">"html.parser"</span>).span
+old_p.replace_with(new_tag)
+
+<span class="comment"># 舊的 <p> 標籤已被替換為 <span></span></code></pre>
+
+    <h3>6.4 修改屬性和內容</h3>
+    <pre><code><span class="keyword">from</span> bs4 <span class="keyword">import</span> BeautifulSoup
+
+html = <span class="string">"<a href="old.html" class="link">連結</a>"</span>
+soup = BeautifulSoup(html, <span class="string">"html.parser"</span>)
+link = soup.a
+
+<span class="comment"># ===== 修改屬性 =====</span>
+link[<span class="string">"href"</span>] = <span class="string">"new.html"</span>
+link[<span class="string">"class"</span>] = <span class="string">"updated-link"</span>
+link[<span class="string">"target"</span>] = <span class="string">"_blank"</span>  <span class="comment"># 新增屬性</span>
+<span class="function">del</span> link[<span class="string">"class"</span>]          <span class="comment"># 刪除屬性</span>
+
+<span class="comment"># ===== 修改內容 =====</span>
+link.string = <span class="string">"新的連結文字"</span>
+<span class="comment"># 或</span>
+link.<span class="function">set_text</span>(<span class="string">"新的連結文字"</span>)
+
+<span class="comment"># ===== 修改標籤名稱 =====</span>
+link.name = <span class="string">"span"</span>
+<span class="comment"># <span href="new.html" target="_blank">新的連結文字</span></span></code></pre>
+
+    <h3>6.5 新增標籤到文件</h3>
+    <pre><code><span class="keyword">from</span> bs4 <span class="keyword">import</span> BeautifulSoup
+
+html = <span class="string">"<div><p>原始內容</p></div>"</span>
+soup = BeautifulSoup(html, <span class="string">"html.parser"</span>)
+
+<span class="comment"># ===== 使用 new_tag() 創建新標籤 =====</span>
+new_div = soup.new_tag(<span class="string">"section"</span>, id<span class="string">="new-section"</span>)
+new_div.string = <span class="string">"這是新區塊"</span>
+
+<span class="comment"># ===== 添加到文件中 =====</span>
+soup.div.append(new_div)
+
+<span class="comment"># ===== 使用 NavigableString 添加純文字 =====</span>
+text = NavigableString(<span class="string">"這是純文字"</span>)
+soup.div.append(text)
+
+<span class="comment"># ===== 使用 Comment 添加註解 =====</span>
+from bs4 <span class="keyword">import</span> Comment
+comment = Comment(<span class="string">"這是一個註解"</span>)
+soup.div.append(comment)
+
+<span class="comment"># 輸出</span>
+<span class="function">print</span>(soup.prettify())</code></pre>
+</section>
+
+<!-- ==================== 進階技巧 ==================== -->
+<section id="advanced">
+    <h2>七、進階技巧 <span class="badge badge-advanced">進階</span></h2>
+
+    <h3>7.1 處理 HTML 實體與特殊字元</h3>
+    <pre><code><span class="keyword">from</span> bs4 <span class="keyword">import</span> BeautifulSoup
+
+html = <span class="string">"<p>價格: &yen;100 &copy; 2024</p>"</span>
+soup = BeautifulSoup(html, <span class="string">"html.parser"</span>)
+
+<span class="comment"># BeautifulSoup 自動轉換 HTML 實體</span>
+<span class="function">print</span>(soup.p.get_text())
+<span class="comment"># 輸出: 價格: ¥100 © 2024
+
+<span class="comment"># 輸出時可控制實體編碼</span>
+<span class="function">print</span>(soup.prettify())
+<span class="comment"># 預設會保留實體編碼</span></code></pre>
+
+    <h3>7.2 處理註解節點</h3>
+    <pre><code><span class="keyword">from</span> bs4 <span class="keyword">import</span> BeautifulSoup, Comment
+
+html = <span class="string">"""
+<div>
+    <p>可見內容</p>
+    <!-- 這是註解 -->
+    <p>另一個段落</p>
+</div>
+"""</span>
+soup = BeautifulSoup(html, <span class="string">"html.parser"</span>)
+
+<span class="comment"># 搜尋註解節點</span>
+comments = soup.find_all(<span class="keyword">lambda</span> tag: <span class="function">isinstance</span>(tag, Comment))
+
+<span class="keyword">for</span> comment <span class="keyword">in</span> comments:
+    <span class="function">print</span>(<span class="string">f"註解內容: {comment}"</span>)
+    comment.extract()  <span class="comment"># 移除註解</span></code></pre>
+
+    <h3>7.3 處理表格資料</h3>
+    <pre><code><span class="keyword">from</span> bs4 <span class="keyword">import</span> BeautifulSoup
+
+html = <span class="string">"""
+<table id="data-table">
+    <thead>
+        <tr>
+            <th>姓名</th>
+            <th>年齡</th>
+            <th>城市</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>小明</td>
+            <td>25</td>
+            <td>台北</td>
+        </tr>
+        <tr>
+            <td>小華</td>
+            <td>30</td>
+            <td>台中</td>
+        </tr>
+    </tbody>
+</table>
+"""</span>
+soup = BeautifulSoup(html, <span class="string">"html.parser"</span>)
+
+<span class="comment"># 提取表格資料</span>
+table = soup.find(<span class="string">"table"</span>)
+rows = table.find_all(<span class="string">"tr"</span>)
+
+<span class="comment"># 提取表頭</span>
+header_row = rows[<span class="number">0</span>]
+headers = [th.get_text(strip=<span class="keyword">True</span>) <span class="keyword">for</span> th <span class="keyword">in</span> header_row.find_all(<span class="string">"th"</span>)]
+<span class="function">print</span>(headers)  <span class="comment"># ['姓名', '年齡', '城市']</span>
+
+<span class="comment"># 提取資料行</span>
+data = []
+<span class="keyword">for</span> row <span class="keyword">in</span> rows[<span class="number">1</span>:]:
+    cells = row.find_all(<span class="string">"td"</span>)
+    row_data = [cell.get_text(strip=<span class="keyword">True</span>) <span class="keyword">for</span> cell <span class="keyword">in</span> cells]
+    data.<span class="function">append</span>(row_data)
+
+<span class="function">print</span>(data)
+<span class="comment"># [['小明', '25', '台北'], ['小華', '30', '台中']]</span></code></pre>
+
+    <h3>7.4 處理巢狀結構</h3>
+    <pre><code><span class="keyword">from</span> bs4 <span class="keyword">import</span> BeautifulSoup
+
+html = <span class="string">"""
+<nav class="menu">
+    <ul>
+        <li><a href="/home">首頁</a></li>
+        <li>
+            <a href="/products">產品</a>
+            <ul class="submenu">
+                <li><a href="/products/a">產品A</a></li>
+                <li><a href="/products/b">產品B</a></li>
+            </ul>
+        </li>
+        <li><a href="/contact">聯絡我們</a></li>
+    </ul>
+</nav>
+"""</span>
+soup = BeautifulSoup(html, <span class="string">"html.parser"</span>)
+
+<span class="comment"># 方法 1：使用 select 遞迴提取所有連結</span>
+all_links = soup.select(<span class="string">"a[href]"</span>)
+<span class="keyword">for</span> link <span class="keyword">in</span> all_links:
+    <span class="function">print</span>(<span class="string">f"{link.get_text(strip=True)}: {link['href']}"</span>)
+
+<span class="comment"># 方法 2：只提取第一層選單</span>
+main_menu = soup.select(<span class="string">"nav.menu > ul > li > a"</span>)
+
+<span class="comment"># 方法 3：提取子選單</span>
+submenu = soup.select(<span class="string">".submenu a"</span>)</code></pre>
+
+    <h3>7.5 處理 iframe 和 src 屬性</h3>
+    <pre><code><span class="keyword">from</span> bs4 <span class="keyword">import</span> BeautifulSoup
+
+html = <span class="string">"""
+<div class="media">
+    <img src="photo.jpg" alt="照片">
+    <video src="video.mp4"></video>
+    <iframe src="https://player.example.com/123"></iframe>
+    <a href="/page">連結</a>
+</div>
+"""</span>
+soup = BeautifulSoup(html, <span class="string">"html.parser"</span>)
+
+<span class="comment"># 提取所有 src 屬性</span>
+media = soup.find_all(<span class="keyword">lambda</span> tag: tag.name <span class="keyword">in</span> (<span class="string">"img"</span>, <span class="string">"video"</span>, <span class="string">"iframe"</span>) <span class="keyword">and</span> tag.has_attr(<span class="string">"src"</span>))
+<span class="keyword">for</span> item <span class="keyword">in</span> media:
+    <span class="function">print</span>(<span class="string">f"{item.name}: {item['src']}"</span>)
+
+<span class="comment"># 提取所有 href 屬性</span>
+links = soup.find_all(<span class="string">"a"</span>, href<span class="string">=True</span>)
+<span class="keyword">for</span> link <span class="keyword">in</span> links:
+    <span class="function">print</span>(<span class="string">f"文字: {link.get_text()}, 連結: {link['href']}"</span>)</code></pre>
+
+    <h3>7.6 BeautifulSoup 與 lxml 結合使用</h3>
+    <pre><code><span class="keyword">from</span> bs4 <span class="keyword">import</span> BeautifulSoup
+<span class="keyword">import</span> lxml.html
+
+<span class="comment"># lxml 解析器處理大型 HTML 效能更好</span>
+<span class="keyword">with</span> <span class="function">open</span>(<span class="string">"large_file.html"</span>, encoding=<span class="string">"utf-8"</span>) <span class="keyword">as</span> f:
+    html_content = f.<span class="function">read</span>()
+
+<span class="comment"># 使用 lxml 解析器（速度比 html.parser 快 10-100 倍）</span>
+soup = BeautifulSoup(html_content, <span class="string">"lxml"</span>)
+
+<span class="comment"># lxml 也支援 XPath（如果需要更強大的查詢能力）</span>
+<span class="comment"># 結合使用：</span>
+<span class="keyword">from</span> lxml <span class="keyword">import</span> etree
+tree = lxml.html.fromstring(html_content)
+<span class="comment"># 現在可以使用 XPath</span>
+titles = tree.xpath(<span class="string">"//title/text()"</span>)</code></pre>
+
+    <h3>7.7 處理編碼問題</h3>
+    <pre><code><span class="keyword">from</span> bs4 <span class="keyword">import</span> BeautifulSoup
+<span class="keyword">import</span> requests
+
+<span class="comment"># ===== 方法 1：指定 encoding =====</span>
+response = requests.<span class="function">get</span>(<span class="string">"https://example.com"</span>)
+response.encoding = <span class="string">"utf-8"</span>
+soup = BeautifulSoup(response.content, <span class="string">"html.parser"</span>)
+
+<span class="comment"># ===== 方法 2：從 HTML meta 標籤偵測 =====</span>
+<span class="comment"># BeautifulSoup 會自動從 HTML 中偵測編碼</span>
+
+<span class="comment"># ===== 方法 3：手動指定編碼讀取檔案 =====</span>
+<span class="keyword">with</span> <span class="function">open</span>(<span class="string">"file.html"</span>, encoding=<span class="string">"utf-8"</span>) <span class="keyword">as</span> f:
+    soup = BeautifulSoup(f, <span class="string">"html.parser"</span>)
+
+<span class="comment"># ===== 檢查 BeautifulSoup 偵測的編碼 =====</span>
+<span class="function">print</span>(soup.original_encoding)  <span class="comment"># 原始編碼</span>
+<span class="function">print</span>(soup.encoding)            <span class="comment"># 當前編碼</span></code></pre>
+</section>
+
+<!-- ==================== 實戰範例 ==================== -->
+<section id="examples">
+    <h2>八、實戰範例</h2>
+
+    <h3>8.1 範例一：爬取新聞標題</h3>
+    <pre><code><span class="keyword">import</span> requests
+<span class="keyword">from</span> bs4 <span class="keyword">import</span> BeautifulSoup
+<span class="keyword">import</span> json
+
+<span class="keyword">def</span> <span class="function">scrape_news</span>(url):
+    <span class="string">"""從新聞網站抓取標題"""</span>
+    headers = {
+        <span class="string">"User-Agent"</span>: <span class="string">"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"</span>
+    }
+    
+    response = requests.<span class="function">get</span>(url, headers=headers)
+    response.<span class="function">raise_for_status</span>()
+    
+    soup = BeautifulSoup(response.content, <span class="string">"html.parser"</span>)
+    
+    news_data = []
+    
+    <span class="comment"># 假設新聞列表在 <article class="news-item"> 中</span>
+    news_items = soup.find_all(<span class="string">"article"</span>, class_<span class="string">="news-item"</span>)
+    
+    <span class="keyword">for</span> item <span class="keyword">in</span> news_items:
+        title_tag = item.find(<span class="string">"h2"</span>)
+        link_tag = item.find(<span class="string">"a"</span>)
+        date_tag = item.find(<span class="string">"span"</span>, class_<span class="string">="date"</span>)
+        
+        <span class="keyword">if</span> title_tag <span class="keyword">and</span> link_tag:
+            news_data.<span class="function">append</span>({
+                <span class="string">"title"</span>: title_tag.get_text(strip=<span class="keyword">True</span>),
+                <span class="string">"url"</span>: link_tag.<span class="function">get</span>(<span class="string">"href"</span>),
+                <span class="string">"date"</span>: date_tag.get_text(strip=<span class="keyword">True</span>) <span class="keyword">if</span> date_tag <span class="keyword">else</span> <span class="keyword">None</span>
+            })
+    
+    <span class="keyword">return</span> news_data
+
+<span class="comment"># 使用方式</span>
+<span class="comment"># data = scrape_pagination("https://example.com/articles", total_pages=10)</span></code></pre>
+
+    <h3>8.7 範例七：動態網站資料提取</h3>
+    <pre><code><span class="keyword">from</span> bs4 <span class="keyword">import</span> BeautifulSoup
+<span class="keyword">import</span> json
+
+<span class="keyword">def</span> <span class="function">extract_api_from_html</span>(html_content):
+    <span class="string">"""從 HTML 中提取嵌入的 JSON API 資料"""</span>
+    soup = BeautifulSoup(html_content, <span class="string">"html.parser"</span>)
+    
+    <span class="comment"># 許多現代網站將資料嵌入在 script 標籤中</span>
+    <span class="comment"># 尋找包含 JSON 資料的 script 標籤</span>
+    script_tags = soup.find_all(<span class="string">"script"</span>)
+    
+    <span class="keyword">for</span> script <span class="keyword">in</span> script_tags:
+        <span class="keyword">if</span> script.string <span class="keyword">and</span> <span class="string">"window.__INITIAL_STATE__"</span> <span class="keyword">in</span> script.string:
+            <span class="comment"># 提取 JSON 資料</span>
+            json_str = script.string.split(<span class="string">"window.__INITIAL_STATE__ = "</span>)[<span class="number">1</span>]
+            json_str = json_str.rstrip(<span class="string">";"</span>)
+            data = json.loads(json_str)
+            <span class="keyword">return</span> data
+    
+    <span class="keyword">return</span> <span class="keyword">None</span>
+
+<span class="comment"># 使用方式</span>
+<span class="comment"># with open("page.html", encoding="utf-8") as f:</span>
+<span class="comment">#     data = extract_api_from_html(f.read())</span></code></pre>
+
+    <h3>8.8 範例八：完整爬蟲類別封裝</h3>
+    <pre><code><span class="keyword">import</span> requests
+<span class="keyword">from</span> bs4 <span class="keyword">import</span> BeautifulSoup
+<span class="keyword">import</span> time
+<span class="keyword">import</span> json
+
+<span class="keyword">class</span> <span class="function">WebScraper</span>:
+    <span class="string">"""
+    通用網頁爬蟲類別
+    
+    使用範例:
+        scraper = WebScraper(delay=1)
+        scraper.add_request("https://example.com/news", "news_data.json")
+        scraper.add_request("https://example.com/products", "products_data.json")
+        scraper.execute()
+    """</span>
+    
+    <span class="keyword">def</span> <span class="function">__init__</span>(self, delay=<span class="number">1</span>, timeout=<span class="number">10</span>, user_agent=<span class="keyword">None</span>):
+        self.delay = delay
+        self.timeout = timeout
+        self.session = requests.Session()
+        
+        <span class="keyword">if</span> user_agent:
+            self.session.headers[<span class="string">"User-Agent"</span>] = user_agent
+        <span class="keyword">else</span>:
+            self.session.headers[<span class="string">"User-Agent"</span>] = (
+                <span class="string">"Mozilla/5.0 (Windows NT 10.0; Win64; x64)"</span>
+                <span class="string">" AppleWebKit/537.36 (KHTML, like Gecko)"</span>
+                <span class="string">" Chrome/120.0.0.0 Safari/537.36"</span>
+            )
+    
+    <span class="keyword">def</span> <span class="function">fetch</span>(self, url):
+        <span class="string">"""發送 GET 請求並返回 BeautifulSoup 物件"""</span>
+        <span class="keyword">try</span>:
+            response = self.session.<span class="function">get</span>(url, timeout=self.timeout)
+            response.<span class="function">raise_for_status</span>()
+            <span class="keyword">return</span> BeautifulSoup(response.content, <span class="string">"html.parser"</span>)
+        <span class="keyword">except</span> requests.RequestException <span class="keyword">as</span> e:
+            <span class="function">print</span>(<span class="string">f"請求失敗: {url} - {e}"</span>)
+            <span class="keyword">return</span> <span class="keyword">None</span>
+    
+    <span class="keyword">def</span> <span class="function">extract_items</span>(self, soup, selector):
+        <span class="string">"""根據 CSS 選擇器提取項目列表"""</span>
+        elements = soup.select(selector)
+        items = []
+        
+        <span class="keyword">for</span> el <span class="keyword">in</span> elements:
+            item = {}
+            <span class="comment"># 根據實際網站結構提取欄位</span>
+            <span class="keyword">for</span> field, field_selector <span class="keyword">in</span> self.fields.items():
+                tag = el.select_one(field_selector) <span class="keyword">if</span> <span class="function">isinstance</span>(field_selector, <span class="keyword">str</span>) <span class="keyword">else</span> el
+                <span class="keyword">if</span> tag:
+                    item[field] = tag.get_text(strip=<span class="keyword">True</span>)
+                <span class="keyword">else</span>:
+                    item[field] = <span class="keyword">None</span>
+            items.<span class="function">append</span>(item)
+        
+        <span class="keyword">return</span> items
+    
+    <span class="keyword">def</span> <span class="function">save_json</span>(self, data, filename):
+        <span class="string">"""將資料儲存為 JSON 檔案"""</span>
+        <span class="keyword">with</span> <span class="function">open</span>(filename, <span class="string">"w"</span>, encoding=<span class="string">"utf-8"</span>) <span class="keyword">as</span> f:
+            json.dump(data, f, ensure_ascii=<span class="keyword">False</span>, indent=<span class="number">2</span>)
+        <span class="function">print</span>(<span class="string">f"已儲存 {len(data)} 筆資料到 {filename}"</span>)
+    
+    <span class="keyword">def</span> <span class="function">run</span>(self, url, output_file, selector_config):
+        <span class="string">"""執行爬取流程"""</span>
+        self.fields = selector_config
+        soup = self.<span class="function">fetch</span>(url)
+        
+        <span class="keyword">if</span> soup:
+            items = self.<span class="function">extract_items</span>(soup, <span class="string">"article"</span>)
+            self.<span class="function">save_json</span>(items, output_file)
+        
+        time.<span class="function">sleep</span>(self.delay)
+
+<span class="comment"># 使用範例</span>
+<span class="comment"># config = {</span>
+<span class="comment">#     "title": "h2.title",</span>
+<span class="comment">#     "summary": "div.summary",</span>
+<span class="comment">#     "link": "a[href]",</span>
+<span class="comment">#     "date": "span.date"</span>
+<span class="comment"># }</span>
+<span class="comment"># scraper = WebScraper(delay=2)</span>
+<span class="comment"># scraper.run("https://example.com/news", "news.json", config)</span></code></pre>
+</section>
+
+<!-- ==================== 最佳實踐 ==================== -->
+<section id="bestpractices">
+    <h2>九、最佳實踐與注意事項</h2>
+
+    <h3>9.1 效能優化</h3>
+    <pre><code><span class="keyword">from</span> bs4 <span class="keyword">import</span> BeautifulSoup
+
+<span class="comment"># ❌ 低效：在大型文件上反覆呼叫 find_all</span>
+<span class="keyword">for</span> i <span class="keyword">in</span> <span class="function">range</span>(<span class="number">1000</span>):
+    items = soup.find_all(<span class="string">"div"</span>)  <span class="comment"># 每次都重新搜尋</span>
+
+<span class="comment"># ✅ 高效：快取搜尋結果</span>
+items = soup.find_all(<span class="string">"div"</span>)  <span class="comment"># 只搜尋一次</span>
+<span class="keyword">for</span> i <span class="keyword">in</span> <span class="function">range</span>(<span class="number">1000</span>):
+    <span class="comment"># 使用已快取的 items</span>
+    <span class="keyword">pass</span>
+
+<span class="comment"># ✅ 使用 lxml 解析器提升效能</span>
+soup = BeautifulSoup(html, <span class="string">"lxml"</span>)  <span class="comment"># 比 html.parser 快 10-100 倍</span></code></pre>
+
+    <h3>9.2 錯誤處理</h3>
+    <pre><code><span class="keyword">import</span> requests
+<span class="keyword">from</span> bs4 <span class="keyword">import</span> BeautifulSoup
+
+<span class="keyword">def</span> <span class="function">safe_scrape</span>(url):
+    <span class="string">"""安全地爬取網頁"""</span>
+    <span class="keyword">try</span>:
+        response = requests.<span class="function">get</span>(url, timeout=<span class="number">10</span>)
+        response.<span class="function">raise_for_status</span>()
+        
+        soup = BeautifulSoup(response.content, <span class="string">"html.parser"</span>)
+        
+        <span class="comment"># 檢查是否找到目標元素</span>
+        target = soup.find(<span class="string">"div"</span>, class_<span class="string">="content"</span>)
+        <span class="keyword">if</span> <span class="keyword">not</span> target:
+            <span class="function">print</span>(<span class="string">"未找到目標內容"</span>)
+            <span class="keyword">return</span> <span class="keyword">None</span>
+        
+        <span class="keyword">return</span> target.get_text()
+        
+    <span class="keyword">except</span> requests.Timeout:
+        <span class="function">print</span>(<span class="string">"請求逾時"</span>)
+    <span class="keyword">except</span> requests.HTTPError <span class="keyword">as</span> e:
+        <span class="function">print</span>(<span class="string">f"HTTP 錯誤: {e}"</span>)
+    <span class="keyword">except</span> Exception <span class="keyword">as</span> e:
+        <span class="function">print</span>(<span class="string">f"發生錯誤: {e}"</span>)
+    
+    <span class="keyword">return</span> <span class="keyword">None</span></code></pre>
+
+    <h3>9.3 常見陷阱與解決方法</h3>
+    <table>
+        <tr>
+            <th>問題</th>
+            <th>原因</th>
+            <th>解決方法</th>
+        </tr>
+        <tr>
+            <td>找不到元素</td>
+            <td>JavaScript 動態載入</td>
+            <td>使用 selenium 或呼叫 API</td>
+        </tr>
+        <tr>
+            <td>亂碼</td>
+            <td>編碼錯誤</td>
+            <td>指定正確的 encoding</td>
+        </tr>
+        <tr>
+            <td>403 Forbidden</td>
+            <td>需要 User-Agent</td>
+            <td>設定 headers 模擬瀏覽器</td>
+        </tr>
+        <tr>
+            <td>元素不存在</td>
+            <td>網站結構變更</td>
+            <td>使用 <code>if element:</code> 檢查</td>
+        </tr>
+        <tr>
+            <td>爬取過快被封 IP</td>
+            <td>請求頻率太高</td>
+            <td>加入 delay 或使用 proxy pool</td>
+        </tr>
+        <tr>
+            <td>find_all() 返回空列表</td>
+            <td>選擇器不正確</td>
+            <td>使用 browser DevTools 檢查</td>
+        </tr>
+    </table>
+
+    <h3>9.4 道德爬蟲原則</h3>
+    <div class="tip-box">
+        <h4>📋 爬蟲最佳實踐清單</h4>
+        <ul>
+            <li><strong>檢查 robots.txt</strong>：確認網站允許爬取</li>
+            <li><strong>設定延遲</strong>：每次請求間隔 1-3 秒</li>
+            <li><strong>設定 User-Agent</strong>：讓網站知道爬蟲身份</li>
+            <li><strong>限制爬取範圍</strong>：只抓取需要的資料</li>
+            <li><strong>處理錯誤</strong>：不要因為單一錯誤導致整個程式崩潰</li>
+            <li><strong>尊重版權</strong>：確認資料使用權限</li>
+            <li><strong>提供聯繫方式</strong>：在 robots.txt 或網站上留下 Email</li>
+        </ul>
+    </div>
+
+    <h3>9.5 相關套件推薦</h3>
+    <table>
+        <tr>
+            <th>套件</th>
+            <th>用途</th>
+        </tr>
+        <tr>
+            <td><code>requests</code></td>
+            <td>HTTP 請求</td>
+        </tr>
+        <tr>
+            <td><code>lxml</code></td>
+            <td>高速 XML/HTML 解析</td>
+        </tr>
+        <tr>
+            <td><code>scrapy</code></td>
+            <td>大型爬蟲框架</td>
+        </tr>
+        <tr>
+            <td><code>selenium</code></td>
+            <td>瀏覽器自動化（JavaScript）</td>
+        </tr>
+        <tr>
+            <td><code>playwright</code></td>
+            <td>現代瀏覽器自動化</td>
+        </tr>
+        <tr>
+            <td><code>pandas</code></td>
+            <td>資料分析與儲存</td>
+        </tr>
+        <tr>
+            <td><code>itemadapter</code></td>
+            <td>Scrapy 資料處理</td>
+        </tr>
+    </table>
+
+    <h3>9.6 快速參考卡</h3>
+    <div class="example-box">
+        <pre><code><span class="comment"># ===== 快速參考 =====</span>
+
+<span class="comment"># 建立物件</span>
+soup = BeautifulSoup(html, <span class="string">"lxml"</span>)
+
+<span class="comment"># 基本搜尋</span>
+soup.find(<span class="string">"tag"</span>)              <span class="comment"># 第一個匹配</span>
+soup.find_all(<span class="string">"tag"</span>)          <span class="comment"># 所有匹配</span>
+soup.select(<span class="string">"css selector"</span>)   <span class="comment"># CSS 選擇器</span>
+
+<span class="comment"># 屬性搜尋</span>
+soup.find(<span class="string">"a"</span>, href<span class="string">=True</span>)           <span class="comment"># 有 href 的 a</span>
+soup.find(<span class="string">"p"</span>, class_<span class="string">="text"</span>)       <span class="comment"># class="text" 的 p</span>
+soup.find(<span class="string">"div"</span>, id<span class="string">="main"</span>)         <span class="comment"># id="main" 的 div</span>
+
+<span class="comment"># 文字搜尋</span>
+soup.find(<span class="string">"p"</span>, text_<span class="string">="目標文字"</span>)    <span class="comment"># 包含文字</span>
+
+<span class="comment"># 正則搜尋</span>
+<span class="keyword">import</span> re
+soup.find_all(<span class="string">"a"</span>, href<span class="string">=re.compile(r"/page/")</span>)
+
+<span class="comment"># 提取資料</span>
+tag.text                    <span class="comment"># 純文字</span>
+tag.get_text(strip=<span class="keyword">True</span>)   <span class="comment"># 去除空白</span>
+tag[<span class="string">"href"</span>]                <span class="comment"># 屬性值</span>
+tag.<span class="function">get</span>(<span class="string">"href"</span>)           <span class="comment"># 安全獲取屬性</span>
+
+<span class="comment"># 導航</span>
+tag.parent                 <span class="comment"># 父節點</span>
+tag.children               <span class="comment"># 子節點迭代器</span>
+tag.parents                <span class="comment"># 所有父節點</span>
+tag.next_sibling           <span class="comment"># 下一個兄弟</span>
+tag.previous_sibling       <span class="comment"># 上一個兄弟</span>
+
+<span class="comment"># 修改</span>
+tag.<span class="function">decompose</span>()            <span class="comment"># 刪除</span>
+tag.<span class="function">extract</span>()              <span class="comment"># 刪除並保留</span>
+tag.<span class="function">replace_with</span>(new)     <span class="comment"># 替換</span>
+tag.append(new_tag)        <span class="comment"># 新增子節點</span>
+soup.new_tag(<span class="string">"div"</span>)        <span class="comment"># 創建新標籤</span></code></pre>
+    </div>
+</section>
+
+</div>
+
+<footer>
+    <h2>📖 總結</h2>
+    <p>本教學涵蓋了 BeautifulSoup4 從基礎到進階的完整功能，包括：</p>
+    <ul style="text-align: left; max-width: 600px; margin: 1rem auto;">
+        <li>✅ 解析樹的建立與基本概念</li>
+        <li>✅ 樹狀導航與 CSS 選擇器</li>
+        <li>✅ find()/find_all() 搜尋方法</li>
+        <li>✅ 文件修改（新增、刪除、替換）</li>
+        <li>✅ 進階技巧（表格、巢狀結構、編碼）</li>
+        <li>✅ 八個實戰爬蟲範例</li>
+        <li>✅ 最佳實踐與效能優化</li>
+    </ul>
+    <p style="margin-top: 2rem;">開始使用 BeautifulSoup4 打造你的爬蟲專案吧！🚀</p>
+    <p style="margin-top: 2rem; opacity: 0.7; font-size: 0.9rem;">
+        官方文件：<a href="https://www.crummy.com/software/BeautifulSoup/bs4/doc/" target="_blank" 
+        style="color: #4a90d9;">https://www.crummy.com/software/BeautifulSoup/bs4/doc/</a>
+    </p>
+    <p style="margin-top: 1rem; opacity: 0.5; font-size: 0.8rem;">
+        &copy; 2024 BeautifulSoup4 教學 | 本教學文件採用 MIT 授權
+    </p>
+</footer>
+
+</body>
+</html>
+</code></pre>
+</section>
+
+</div>
+
+<footer>
+    <h2>📖 總結</h2>
+    <p>本教學涵蓋了 BeautifulSoup4 從基礎到進階的完整功能，包括：</p>
+    <ul style="text-align: left; max-width: 600px; margin: 1rem auto;">
+        <li>✅ 解析樹的建立與基本概念</li>
+        <li>✅ 樹狀導航與 CSS 選擇器</li>
+        <li>✅ find()/find_all() 搜尋方法</li>
+        <li>✅ 文件修改（新增、刪除、替換）</li>
+        <li>✅ 進階技巧（表格、巢狀結構、編碼）</li>
+        <li>✅ 八個實戰爬蟲範例</li>
+        <li>✅ 最佳實踐與效能優化</li>
+    </ul>
+    <p style="margin-top: 2rem;">開始使用 BeautifulSoup4 打造你的爬蟲專案吧！🚀</p>
+    <p style="margin-top: 2rem; opacity: 0.7; font-size: 0.9rem;">
+        官方文件：<a href="https://www.crummy.com/software/BeautifulSoup/bs4/doc/" target="_blank" 
+        style="color: #4a90d9;">https://www.crummy.com/software/BeautifulSoup/bs4/doc/</a>
+    </p>
+    <p style="margin-top: 1rem; opacity: 0.5; font-size: 0.8rem;">
+        &copy; 2024 BeautifulSoup4 教學 | 本教學文件採用 MIT 授權
+    </p>
+</footer>
+
+</body>
+</html>
+</content>
+<task_progress>
+- [x] 創建 index.html 基本結構
+- [x] 簡介與核心特點
+- [x] 安裝與設定
+- [x] 基礎用法（建立 BeautifulSoup 物件、格式化輸出）
+- [x] 樹狀導航（父子關係、內容提取、CSS 選擇器）
+- [x] 搜尋方法（find/find_all、進階搜尋）
+- [x] 修改文件（新增、刪除、替換節點）
+- [x] 進階技巧（HTML 實體、註解、表格、巢狀結構）
+- [x] 實戰範例（新聞爬取、圖片下載、登入、API、表格轉 CSV、分頁）
+- [x] 最佳實踐與注意事項
+- [x] 補充完整結尾與 footer
+</task_progress>
+<span class="comment"># news = scrape_news("https://news.example.com")</span>
+<span class="comment"># with open("news.json", "w", encoding="utf-8") as f:</span>
+<span class="comment">#     json.dump(news, f, ensure_ascii=False, indent=2)</span></code></pre>
+
+    <h3>8.2 範例二：下載圖片</h3>
+    <pre><code><span class="keyword">import</span> requests
+<span class="keyword">from</span> bs4 <span class="keyword">import</span> BeautifulSoup
+<span class="keyword">import</span> os
+
+<span class="keyword">def</span> <span class="function">download_images</span>(url, save_dir<span class="string">="images"</span>):
+    <span class="string">"""從網頁下載所有圖片"""</span>
+    os.<span class="function">makedirs</span>(save_dir, exist_ok=<span class="keyword">True</span>)
+    
+    response = requests.<span class="function">get</span>(url)
+    soup = BeautifulSoup(response.content, <span class="string">"html.parser"</span>)
+    
+    images = soup.find_all(<span class="string">"img"</span>)
+    
+    <span class="keyword">for</span> img <span class="keyword">in</span> images:
+        src = img.<span class="function">get</span>(<span class="string">"src"</span>)
+        <span class="keyword">if</span> <span class="keyword">not</span> src:
+            <span class="keyword">continue</span>
+        
+        <span class="comment"># 處理相對路徑</span>
+        <span class="keyword">if</span> src.startswith(<span class="string">"//"</span>):
+            src = <span class="string">"https:"</span> + src
+        <span class="keyword">elif</span> src.startswith(<span class="string">"/"</span>):
+            from urllib.parse <span class="keyword">import</span> urljoin
+            src = urljoin(url, src)
+        
+        <span class="keyword">if</span> src.startswith((<span class="string">"http://"</span>, <span class="string">"https://"</span>)):
+            <span class="keyword">try</span>:
+                img_response = requests.<span class="function">get</span>(src)
+                <span class="comment"># 從 URL 提取檔名</span>
+                filename = os.<span class="function">path</span>.basename(src)
+                save_path = os.<span class="function">path</span>.join(save_dir, filename)
+                
+                <span class="keyword">with</span> <span class="function">open</span>(save_path, <span class="string">"wb"</span>) <span class="keyword">as</span> f:
+                    f.<span class="function">write</span>(img_response.content)
+                <span class="function">print</span>(<span class="string">f"已下載: {filename}"</span>)
+            <span class="keyword">except</span> requests.RequestException <span class="keyword">as</span> e:
+                <span class="function">print</span>(<span class="string">f"下載失敗: {src} - {e}"</span>)
+
+<span class="comment"># 使用方式</span>
+<span class="comment"># download_images("https://example.com")</span></code></pre>
+
+    <h3>8.3 範例三：登入並爬取登入後頁面</h3>
+    <pre><code><span class="keyword">import</span> requests
+<span class="keyword">from</span> bs4 <span class="keyword">import</span> BeautifulSoup
+
+<span class="keyword">def</span> <span class="function">scrape_login_required_site</span>():
+    <span class="string">"""使用 session 保持登入狀態"""</span>
+    
+    session = requests.<span class="function">Session</span>()
+    
+    <span class="comment"># 1. 先取得登入頁面（獲取 CSRF token）</span>
+    login_page = session.<span class="function">get</span>(<span class="string">"https://example.com/login"</span>)
+    soup = BeautifulSoup(login_page.content, <span class="string">"html.parser"</span>)
+    
+    <span class="comment"># 提取 CSRF token</span>
+    csrf_token = soup.find(<span class="string">"input"</span>, name<span class="string">="_csrf"</span>)
+    <span class="keyword">if</span> csrf_token:
+        csrf_value = csrf_token[<span class="string">"value"</span>]
+    <span class="keyword">else</span>:
+        <span class="function">print</span>(<span class="string">"未找到 CSRF token"</span>)
+        <span class="keyword">return</span>
+    
+    <span class="comment"># 2. 發送登入請求</span>
+    login_data = {
+        <span class="string">"username"</span>: <span class="string">"your_username"</span>,
+        <span class="string">"password"</span>: <span class="string">"your_password"</span>,
+        <span class="string">"_csrf"</span>: csrf_value
+    }
+    
+    login_response = session.<span class="function">post</span>(
+        <span class="string">"https://example.com/login"</span>,
+        data=login_data,
+        headers={<span class="string">"Referer"</span>: <span class="string">"https://example.com/login"</span>}
+    )
+    
+    <span class="comment"># 3. 檢查是否登入成功</span>
+    <span class="keyword">if</span> <span class="string">"歡迎"</span> <span class="keyword">in</span> login_response.text:
+        <span class="function">print</span>(<span class="string">"登入成功！"</span>)
+        
+        <span class="comment"># 4. 爬取登入後的頁面</span>
+        dashboard = session.<span class="function">get</span>(<span class="string">"https://example.com/dashboard"</span>)
+        soup = BeautifulSoup(dashboard.content, <span class="string">"html.parser"</span>)
+        
+        <span class="comment"># 解析 dashboard 內容</span>
+        <span class="function">print</span>(soup.get_text())
+    <span class="keyword">else</span>:
+        <span class="function">print</span>(<span class="string">"登入失敗"</span>)</code></pre>
+
+    <h3>8.4 範例四：提取 API 資料</h3>
+    <pre><code><span class="keyword">import</span> requests
+<span class="keyword">import</span> json
+
+<span class="keyword">def</span> <span class="function">fetch_api_data</span>(api_url):
+    <span class="string">"""直接呼叫 API 獲取 JSON 資料（比爬 HTML 更高效）"""</span>
+    
+    response = requests.<span class="function">get</span>(api_url)
+    response.<span class="function">raise_for_status</span>()
+    
+    data = response.<span class="function">json</span>()
+    
+    <span class="comment"># 處理資料</span>
+    <span class="keyword">for</span> item <span class="keyword">in</span> data.<span class="function">get</span>(<span class="string">"results"</span>, []):
+        <span class="function">print</span>(<span class="string">f"名稱: {item['name']}"</span>)
+        <span class="function">print</span>(<span class="string">f"描述: {item['description']}"</span>)
+        <span class="function">print</span>(<span class="string">"---"</span>)
+    
+    <span class="keyword">return</span> data
+
+<span class="comment"># 使用範例：GitHub API</span>
+<span class="comment"># repos = fetch_api_data("https://api.github.com/search/repositories?q=python")</span></code></pre>
+
+    <h3>8.5 範例五：表格資料轉 CSV</h3>
+    <pre><code><span class="keyword">import</span> requests
+<span class="keyword">from</span> bs4 <span class="keyword">import</span> BeautifulSoup
+<span class="keyword">import</span> csv
+
+<span class="keyword">def</span> <span class="function">table_to_csv</span>(url, output_file<span class="string">="output.csv"</span>):
+    <span class="string">"""將網頁表格轉換為 CSV 檔案"""</span>
+    
+    response = requests.<span class="function">get</span>(url)
+    soup = BeautifulSoup(response.content, <span class="string">"html.parser"</span>)
+    
+    tables = soup.find_all(<span class="string">"table"</span>)
+    
+    <span class="keyword">if</span> <span class="keyword">not</span> tables:
+        <span class="function">print</span>(<span class="string">"未找到表格"</span>)
+        <span class="keyword">return</span>
+    
+    <span class="keyword">for</span> table_idx, table <span class="keyword">in</span> <span class="function">enumerate</span>(tables):
+        rows = table.find_all(<span class="string">"tr"</span>)
+        
+        <span class="keyword">if</span> <span class="keyword">not</span> rows:
+            <span class="keyword">continue</span>
+        
+        <span class="keyword">with</span> <span class="function">open</span>(output_file, <span class="string">"w"</span>, newline=<span class="string">""</span>, encoding=<span class="string">"utf-8"</span>) <span class="keyword">as</span> f:
+            writer = csv.writer(f)
+            
+            <span class="keyword">for</span> row <span class="keyword">in</span> rows:
+                cells = row.find_all([<span class="string">"th"</span>, <span class="string">"td"</span>])
+                row_data = [cell.get_text(strip=<span class="keyword">True</span>) <span class="keyword">for</span> cell <span class="keyword">in</span> cells]
+                writer.<span class="function">writerow</span>(row_data)
+        
+        <span class="function">print</span>(<span class="string">f"已儲存: {output_file}"</span>)
+
+<span class="comment"># 使用方式</span>
+<span class="comment"># table_to_csv("https://example.com/data")</span></code></pre>
+
+    <h3>8.6 範例六：分頁爬取</h3>
+    <pre><code><span class="keyword">import</span> requests
+<span class="keyword">from</span> bs4 <span class="keyword">import</span> BeautifulSoup
+<span class="keyword">import</span> time
+
+<span class="keyword">def</span> <span class="function">scrape_pagination</span>(base_url, total_pages<span class="string">=5</span>):
+    <span class="string">"""爬取多頁資料"""</span>
+    
+    all_data = []
+    
+    <span class="keyword">for</span> page <span class="keyword">in</span> <span class="function">range</span>(<span class="number">1</span>, total_pages + <span class="number">1</span>):
+        url = <span class="string">f"{base_url}?page={page}"</span>
+        <span class="function">print</span>(<span class="string">f"正在爬取第 {page} 頁..."</span>)
+        
+        <span class="keyword">try</span>:
+            response = requests.<span class="function">get</span>(url)
+            soup = BeautifulSoup(response.content, <span class="string">"html.parser"</span>)
+            
+            items = soup.find_all(<span class="string">"div"</span>, class_<span class="string">="item"</span>)
+            
+            <span class="keyword">if</span> <span class="keyword">not</span> items:
+                <span class="function">print</span>(<span class="string">f"第 {page} 頁沒有資料，停止爬取"</span>)
+                <span class="keyword">break</span>
+            
+            <span class="keyword">for</span> item <span class="keyword">in</span> items:
+                title = item.find(<span class="string">"h2"</span>)
+                <span class="keyword">if</span> title:
+                    all_data.<span class="function">append</span>(title.get_text(strip=<span class="keyword">True</span>))
+            
+            <span class="comment"># 避免請求過快，暫停 1 秒</span>
+            time.<span class="function">sleep</span>(<span class="number">1</span>)
+            
+        <span class="keyword">except</span> requests.RequestException <span class="keyword">as</span> e:
+            <span class="function">print</span>(<span class="string">f"爬取第 {page} 頁失敗: {e}"</span>)
+            <span class="keyword">break</span>
+    
+    <span class="function">print</span>(<span class="string">f"共爬取 {len(all_data)} 筆資料"</span>)
+    <span class="keyword">return</span> all_data
+
+<span class="comment"># 使用方式</

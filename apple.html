@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Apple Select | 精選 Apple 商品</title>
+  <meta name="description" content="探索 iPhone 17、iPhone 18 預告系列、MacBook Pro 與 iPad 全系列商品。">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+    :root {
+      --ink: #161616;
+      --muted: #797873;
+      --paper: #f3f0e9;
+      --panel: #fbfaf6;
+      --line: #d9d4c9;
+      --lime: #c8f169;
+      --coral: #ff745e;
+      --blue: #7894ff;
+      --shadow: 0 18px 50px rgba(25, 24, 20, .09);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; color: var(--ink); background: var(--paper); font-family: 'Space Grotesk', 'Microsoft JhengHei', sans-serif; }
+    button, input { font: inherit; }
+    button { cursor: pointer; }
+    .topbar { background: var(--ink); color: #fff; font: 11px 'DM Mono', monospace; letter-spacing: .08em; padding: 9px 5vw; display: flex; justify-content: space-between; }
+    .nav { padding: 23px 5vw; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--line); }
+    .brand { color: var(--ink); text-decoration: none; font-weight: 700; letter-spacing: -.06em; font-size: 25px; }
+    .nav-links { display: flex; gap: 30px; margin-left: 8vw; }
+    .nav-links a { color: var(--ink); text-decoration: none; font-size: 13px; }
+    .nav-actions { display: flex; align-items: center; gap: 11px; }
+    .icon-button { width: 41px; height: 41px; border: 1px solid var(--line); border-radius: 50%; background: transparent; position: relative; }
+    .icon-button:hover { background: var(--ink); color: #fff; }
+    .bag-count { position: absolute; right: -3px; top: -4px; background: var(--coral); color: var(--ink); width: 17px; height: 17px; border-radius: 50%; font: 10px 'DM Mono'; display: grid; place-items: center; }
+
+    .hero { padding: 86px 5vw 73px; display: grid; grid-template-columns: 1.3fr .7fr; gap: 5vw; position: relative; overflow: hidden; }
+    .hero:after { content: '17'; position: absolute; right: 2vw; bottom: -80px; color: rgba(22,22,22,.045); font-size: 410px; font-weight: 700; letter-spacing: -.13em; pointer-events: none; }
+    .eyebrow { font: 11px 'DM Mono', monospace; text-transform: uppercase; letter-spacing: .11em; margin: 0 0 20px; }
+    h1 { font-size: clamp(56px, 9vw, 132px); line-height: .85; letter-spacing: -.09em; max-width: 760px; margin: 0; position: relative; z-index: 1; }
+    .hero-copy { max-width: 360px; align-self: end; padding-bottom: 4px; position: relative; z-index: 1; }
+    .hero-copy p { color: var(--muted); line-height: 1.7; font-size: 14px; margin: 0 0 24px; }
+    .pill-link { display: inline-flex; align-items: center; gap: 15px; color: var(--ink); text-decoration: none; font-size: 13px; border-bottom: 1px solid var(--ink); padding-bottom: 8px; }
+    .pill-link span { background: var(--ink); color: #fff; border-radius: 50%; width: 26px; height: 26px; display: grid; place-items: center; }
+
+    .catalog { padding: 0 5vw 100px; }
+    .catalog-head { display: flex; align-items: end; justify-content: space-between; gap: 20px; border-top: 1px solid var(--ink); padding: 25px 0 31px; }
+    .catalog-head h2 { margin: 0; font-size: 38px; letter-spacing: -.07em; }
+    .tools { display: flex; gap: 10px; align-items: center; }
+    .search { width: 220px; border: 1px solid var(--line); background: transparent; padding: 12px 15px; border-radius: 3px; outline: none; }
+    .search:focus { border-color: var(--ink); }
+    .filter { border: 1px solid var(--line); background: transparent; padding: 12px 14px; border-radius: 3px; }
+    .filter.active, .filter:hover { background: var(--ink); color: #fff; border-color: var(--ink); }
+    .category-row { display: flex; gap: 8px; margin-bottom: 34px; overflow-x: auto; padding-bottom: 5px; }
+    .products { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
+    .product { background: var(--panel); border: 1px solid var(--line); min-height: 430px; display: flex; flex-direction: column; padding: 18px; transition: transform .25s, box-shadow .25s; }
+    .product:hover { transform: translateY(-5px); box-shadow: var(--shadow); }
+    .product-art { height: 220px; margin: -18px -18px 20px; display: grid; place-items: center; position: relative; overflow: hidden; background: #e4e0d7; }
+    .product-art:before { content: ''; position: absolute; width: 180px; height: 180px; border-radius: 50%; background: rgba(255,255,255,.4); }
+    .product-art.phone { background: #dce5ff; }
+    .product-art.mac { background: #e6e3de; }
+    .product-art.pad { background: #dcefe4; }
+    .device { position: relative; z-index: 1; background: #202328; box-shadow: 10px 13px 22px rgba(0,0,0,.2); }
+    .phone-device { width: 78px; height: 150px; border: 4px solid #34383e; border-radius: 15px; }
+    .phone-device:after { content: ''; position: absolute; width: 36px; height: 36px; background: #434953; border-radius: 12px; top: 8px; left: 7px; box-shadow: 13px 0 #434953, 0 13px #434953; }
+    .mac-device { width: 215px; height: 128px; border-radius: 7px 7px 2px 2px; background: #8f969b; border: 5px solid #bbc0c2; }
+    .mac-device:after { content: ''; position: absolute; width: 250px; height: 7px; background: #bbc0c2; bottom: -14px; left: -22px; border-radius: 2px 2px 8px 8px; }
+    .pad-device { width: 112px; height: 158px; border-radius: 13px; background: #303338; border: 4px solid #70757a; }
+    .pad-device:after { content: ''; position: absolute; width: 5px; height: 5px; border-radius: 50%; background: #bfc8c7; left: 50%; top: 6px; }
+    .meta { display: flex; justify-content: space-between; color: var(--muted); font: 10px 'DM Mono', monospace; text-transform: uppercase; }
+    .product h3 { font-size: 21px; letter-spacing: -.06em; margin: 13px 0 7px; }
+    .product-description { color: var(--muted); font-size: 12px; margin: 0 0 17px; line-height: 1.5; min-height: 36px; }
+    .product-footer { margin-top: auto; display: flex; justify-content: space-between; align-items: center; }
+    .price { font: 14px 'DM Mono', monospace; }
+    .add { border: 0; background: var(--lime); padding: 10px 15px; font-size: 12px; border-radius: 2px; }
+    .add:hover { background: var(--ink); color: #fff; }
+    .coming { background: #e6e1d5; color: var(--muted); padding: 10px 13px; font-size: 11px; }
+    .empty { grid-column: 1/-1; color: var(--muted); padding: 50px 0; }
+
+    .footer { background: var(--ink); color: #fff; padding: 27px 5vw; display: flex; justify-content: space-between; font-size: 12px; }
+    .footer span { color: #a7a59d; }
+    .drawer { position: fixed; inset: 0; background: rgba(22,22,22,.35); z-index: 5; visibility: hidden; opacity: 0; transition: opacity .25s, visibility .25s; }
+    .drawer.open { visibility: visible; opacity: 1; }
+    .drawer-panel { position: absolute; right: 0; top: 0; height: 100%; width: min(420px, 92vw); background: var(--panel); padding: 29px; transform: translateX(100%); transition: transform .3s ease; display: flex; flex-direction: column; }
+    .drawer.open .drawer-panel { transform: translateX(0); }
+    .drawer-top { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--line); padding-bottom: 19px; }
+    .drawer-top h2 { margin: 0; font-size: 26px; letter-spacing: -.07em; }
+    .close { border: 0; background: none; font-size: 25px; }
+    .cart-items { flex: 1; overflow-y: auto; padding: 14px 0; }
+    .cart-item { display: flex; justify-content: space-between; gap: 15px; padding: 17px 0; border-bottom: 1px solid var(--line); font-size: 13px; }
+    .cart-item small { display: block; color: var(--muted); margin-top: 5px; }
+    .remove { border: 0; background: none; color: var(--muted); font-size: 11px; }
+    .cart-total { border-top: 1px solid var(--ink); padding-top: 20px; display: flex; justify-content: space-between; font: 15px 'DM Mono', monospace; }
+    .checkout { border: 0; background: var(--ink); color: #fff; padding: 15px; margin-top: 17px; width: 100%; }
+    .checkout:hover { background: var(--coral); color: var(--ink); }
+    @media (max-width: 900px) { .products { grid-template-columns: repeat(2, minmax(0, 1fr)); } .hero { grid-template-columns: 1fr; padding-top: 60px; } .hero-copy { margin-top: 28px; } .nav-links { display: none; } }
+    @media (max-width: 560px) { .topbar { font-size: 9px; } .topbar span:last-child { display: none; } .nav { padding: 18px 5vw; } .catalog-head { align-items: start; flex-direction: column; } .tools { width: 100%; } .search { flex: 1; min-width: 0; } .products { grid-template-columns: 1fr; } .product { min-height: 400px; } .hero { padding-bottom: 55px; } h1 { font-size: 67px; } }
+  </style>
+</head>
+<body>
+  <div class="topbar"><span>APPLE SELECT / TAIWAN</span><span>免運費 · 14 天鑑賞期 · 原廠保固</span></div>
+  <nav class="nav">
+    <a class="brand" href="#top">apple select</a>
+    <div class="nav-links"><a href="#catalog">全部商品</a><a href="#catalog" data-nav="iphone">iPhone</a><a href="#catalog" data-nav="mac">MacBook Pro</a><a href="#catalog" data-nav="ipad">iPad</a></div>
+    <div class="nav-actions"><button class="icon-button" id="searchFocus" aria-label="搜尋商品">⌕</button><button class="icon-button" id="bagButton" aria-label="開啟購物袋">⌑<b class="bag-count" id="bagCount">0</b></button></div>
+  </nav>
+
+  <main id="top">
+    <section class="hero">
+      <div><p class="eyebrow">New season / 2026</p><h1>讓科技<br><em>成為日常。</em></h1></div>
+      <div class="hero-copy"><p>從口袋裡的 iPhone，到桌面上的 MacBook Pro。挑選你每天真正會使用的好工具，今天就開始。</p><a class="pill-link" href="#catalog">探索全系列 <span>↓</span></a></div>
+    </section>
+    <section class="catalog" id="catalog">
+      <div class="catalog-head"><div><p class="eyebrow">Shop the lineup</p><h2>精選商品</h2></div><div class="tools"><input class="search" id="searchInput" type="search" placeholder="搜尋型號..." aria-label="搜尋型號"><button class="filter" id="sortButton">價格排序 ↕</button></div></div>
+      <div class="category-row"><button class="filter active" data-category="all">全部</button><button class="filter" data-category="iphone">iPhone</button><button class="filter" data-category="mac">MacBook Pro</button><button class="filter" data-category="ipad">iPad</button></div>
+      <div class="products" id="productGrid"></div>
+    </section>
+  </main>
+
+  <footer class="footer"><strong>apple select</strong><span>好設計，值得每天使用。© 2026 Apple Select</span></footer>
+  <aside class="drawer" id="drawer" aria-hidden="true"><div class="drawer-panel"><div class="drawer-top"><h2>你的購物袋</h2><button class="close" id="closeDrawer" aria-label="關閉購物袋">×</button></div><div class="cart-items" id="cartItems"><p class="empty">購物袋目前是空的。</p></div><div class="cart-total"><span>小計</span><strong id="cartTotal">NT$ 0</strong></div><button class="checkout">前往結帳 →</button></div></aside>
+
+  <script>
+    const products = [
+      ['iPhone 17', 'iphone', '霧面玻璃 · A19 晶片', 29900, true], ['iPhone 17 Air', 'iphone', '超薄設計 · A19 晶片', 32900, true], ['iPhone 17 Pro', 'iphone', '鈦金屬 · Pro 相機系統', 38900, true], ['iPhone 17 Pro Max', 'iphone', '最大電池 · Pro 相機系統', 42900, true],
+      ['iPhone 18', 'iphone', '新一代設計 · 預告系列', 31900, false], ['iPhone 18 Air', 'iphone', '更薄，更輕 · 預告系列', 34900, false], ['iPhone 18 Pro', 'iphone', 'Pro 相機系統 · 預告系列', 40900, false], ['iPhone 18 Pro Max', 'iphone', '極致效能 · 預告系列', 45900, false],
+      ['MacBook Pro 14', 'mac', 'M5 · 16GB · 512GB SSD', 54900, true], ['MacBook Pro 14 Pro', 'mac', 'M5 Pro · 24GB · 1TB SSD', 69900, true], ['MacBook Pro 16 Pro', 'mac', 'M5 Pro · 48GB · 1TB SSD', 84900, true], ['MacBook Pro 16 Max', 'mac', 'M5 Max · 48GB · 1TB SSD', 104900, true],
+      ['iPad', 'ipad', 'A16 晶片 · 11 吋 Liquid Retina', 11900, true], ['iPad mini', 'ipad', 'A17 Pro 晶片 · 8.3 吋', 16900, true], ['iPad Air 11', 'ipad', 'M3 晶片 · 11 吋 Liquid Retina', 19900, true], ['iPad Air 13', 'ipad', 'M3 晶片 · 13 吋 Liquid Retina', 26900, true], ['iPad Pro 11', 'ipad', 'M5 晶片 · Ultra Retina XDR', 32900, true], ['iPad Pro 13', 'ipad', 'M5 晶片 · Ultra Retina XDR', 44900, true]
+    ].map(([name, category, description, price, available]) => ({ name, category, description, price, available }));
+    const state = { category: 'all', query: '', sort: false, cart: [] };
+    const grid = document.querySelector('#productGrid');
+    const money = value => `NT$ ${value.toLocaleString('zh-TW')}`;
+    function drawProducts() {
+      let visible = products.filter(product => (state.category === 'all' || product.category === state.category) && product.name.toLowerCase().includes(state.query.toLowerCase()));
+      if (state.sort) visible.sort((a, b) => a.price - b.price);
+      grid.innerHTML = visible.length ? visible.map((product, index) => `<article class="product"><div class="product-art ${product.category}"><div class="device ${product.category === 'iphone' ? 'phone-device' : product.category === 'mac' ? 'mac-device' : 'pad-device'}"></div></div><div class="meta"><span>${product.category}</span><span>${product.available ? 'Available now' : 'Coming soon'}</span></div><h3>${product.name}</h3><p class="product-description">${product.description}</p><div class="product-footer"><span class="price">${money(product.price)}</span>${product.available ? `<button class="add" data-add="${products.indexOf(product)}">加入購物袋 +</button>` : '<span class="coming">敬請期待</span>'}</div></article>`).join('') : '<p class="empty">找不到符合的商品，試試其他關鍵字。</p>';
+      document.querySelectorAll('[data-add]').forEach(button => button.addEventListener('click', () => addToCart(Number(button.dataset.add))));
+    }
+    function addToCart(index) { state.cart.push(products[index]); updateCart(); document.querySelector('#bagButton').animate([{ transform: 'scale(1)' }, { transform: 'scale(1.12)' }, { transform: 'scale(1)' }], { duration: 350 }); }
+    function updateCart() { document.querySelector('#bagCount').textContent = state.cart.length; document.querySelector('#cartItems').innerHTML = state.cart.length ? state.cart.map((item, index) => `<div class="cart-item"><div><strong>${item.name}</strong><small>${money(item.price)}</small></div><button class="remove" data-remove="${index}">移除 ×</button></div>`).join('') : '<p class="empty">購物袋目前是空的。</p>'; document.querySelector('#cartTotal').textContent = money(state.cart.reduce((total, item) => total + item.price, 0)); document.querySelectorAll('[data-remove]').forEach(button => button.addEventListener('click', () => { state.cart.splice(Number(button.dataset.remove), 1); updateCart(); })); }
+    document.querySelectorAll('[data-category]').forEach(button => button.addEventListener('click', () => { state.category = button.dataset.category; document.querySelectorAll('[data-category]').forEach(item => item.classList.toggle('active', item === button)); drawProducts(); }));
+    document.querySelector('#searchInput').addEventListener('input', event => { state.query = event.target.value; drawProducts(); });
+    document.querySelector('#sortButton').addEventListener('click', event => { state.sort = !state.sort; event.currentTarget.textContent = state.sort ? '價格：低至高 ↕' : '價格排序 ↕'; drawProducts(); });
+    document.querySelector('#searchFocus').addEventListener('click', () => document.querySelector('#searchInput').focus());
+    const drawer = document.querySelector('#drawer');
+    document.querySelector('#bagButton').addEventListener('click', () => { drawer.classList.add('open'); drawer.setAttribute('aria-hidden', 'false'); });
+    document.querySelector('#closeDrawer').addEventListener('click', () => { drawer.classList.remove('open'); drawer.setAttribute('aria-hidden', 'true'); });
+    drawer.addEventListener('click', event => { if (event.target === drawer) document.querySelector('#closeDrawer').click(); });
+    document.querySelectorAll('[data-nav]').forEach(link => link.addEventListener('click', () => { state.category = link.dataset.nav; document.querySelector(`[data-category="${link.dataset.nav}"]`).click(); }));
+    drawProducts();
+  </script>
+</body>
+</html>
