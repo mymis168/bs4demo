@@ -35,6 +35,7 @@ soup = BeautifulSoup(response.text, "html.parser")  #  html原始碼透過 html.
 news_lists = soup.find_all('a')   # hyper link --> <a href='新聞網址'> 新聞標題 </a>
 print(f'共抓取超連結數量: {len(news_lists)}')
 
-for n in news_lists:
-    print(f'新聞標題: {n.text}  |  連結位址:  {n.get("href")}')
+for n in news_lists:    
+    print(f'新聞標題: {n.text}')
+    #print(f'新聞標題: {n.text}  |  連結位址:  {n.get("href")}')
     
