@@ -4,6 +4,12 @@ from pprint import pprint
 
 url = "https://www.google.com/search"
 
+token = "sk-proj-1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef"
+headers = {
+    "Authorization": f"Bearer {token}",    # openai / finmind 購買 api 後填入 token
+    "Content-Type": "application/json",
+}
+
 params = {
     "q": "2330"
 }

@@ -11,6 +11,7 @@ response = requests.get(url, headers=headers)
 response.raise_for_status() #有異常就終止
 #pprint( response.text)
 
+#2
 #將網頁內容交給 bs 分析
 soup = BeautifulSoup(response.text, "html.parser")  #  html原始碼透過 html.parser分析
 
